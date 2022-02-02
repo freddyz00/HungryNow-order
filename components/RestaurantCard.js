@@ -1,10 +1,10 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 
-const RestaurantCard = ({ item }) => {
+const RestaurantCard = ({ item, onClick }) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={onClick}>
         <Image source={item.imageURL} style={styles.image} resizeMode="cover" />
         <View style={styles.restaurantInfo}>
           <Text style={styles.restaurantName}>{item.name}</Text>

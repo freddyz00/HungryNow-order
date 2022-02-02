@@ -13,13 +13,22 @@ import { restaurants } from "../data/restaurants";
 // import the components
 import RestaurantCard from "../components/RestaurantCard";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <FlatList
         data={restaurants}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <RestaurantCard item={item} />}
+        renderItem={({ item }) => (
+          <RestaurantCard
+            onClick={() => {
+              navigation.navigate("Restaurant", {
+                item,
+              });
+            }}
+            item={item}
+          />
+        )}
         ListHeaderComponent={
           <View>
             <Text style={styles.heading1}>All Restaurants</Text>
