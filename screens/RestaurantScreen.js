@@ -11,10 +11,15 @@ import React, { useState } from "react";
 import FoodItem from "../components/FoodItem";
 import AddToCartModal from "../components/AddToCartModal";
 
-const RestaurantScreen = ({ route }) => {
+import { useCart } from "../context/CartContext";
+import { getNumItemsInCart } from "../helpers";
+
+const RestaurantScreen = ({ route, navigation }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const { menu, imageURL } = route.params.item;
+
+  const { cart } = useCart();
 
   const onFoodItemClick = (item) => {
     setSelectedItem(item);
@@ -35,6 +40,19 @@ const RestaurantScreen = ({ route }) => {
           />
         ))}
       </View>
+      {cart.items.length > 0 && (
+        <TouchableOpacity
+          style={styles.viewCartButton}
+          onPress={() => navigation.navigate("Cart")}
+        >
+          <Text
+            style={styles.viewCartButtonText}
+          >{`View Your Cart (${getNumItemsInCart(cart.items)} item${
+            cart.items.length === 1 ? "" : "s"
+          })`}</Text>
+        </TouchableOpacity>
+      )}
+
       <AddToCartModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
@@ -59,5 +77,18 @@ const styles = StyleSheet.create({
   },
   menuItems: {
     flexGrow: 1,
+  },
+  viewCartButton: {
+    alignSelf: "center",
+    backgroundColor: "#fcbf49",
+    width: "80%",
+    paddingVertical: 15,
+    borderRadius: 10,
+    marginBottom: 30,
+  },
+  viewCartButtonText: {
+    color: "white",
+    fontSize: 20,
+    textAlign: "center",
   },
 });

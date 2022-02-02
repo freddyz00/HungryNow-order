@@ -1,13 +1,28 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 
+import { AntDesign } from "@expo/vector-icons";
+
 const RestaurantCard = ({ item, onClick }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onClick}>
         <Image source={item.imageURL} style={styles.image} resizeMode="cover" />
         <View style={styles.restaurantInfo}>
-          <Text style={styles.restaurantName}>{item.name}</Text>
+          <View>
+            <Text style={styles.restaurantName}>{item.name}</Text>
+            <Text style={styles.restaurantDelivery}>Free Delivery</Text>
+          </View>
+          <View style={styles.ratingContainer}>
+            <AntDesign
+              name="star"
+              size={16}
+              color="#ffe234"
+              style={styles.ratingElement}
+            />
+            <Text style={styles.ratingElement}>4.5</Text>
+            <Text style={styles.ratingElement}>(55)</Text>
+          </View>
         </View>
       </TouchableOpacity>
     </View>
@@ -24,12 +39,12 @@ const styles = StyleSheet.create({
     borderColor: "#DDDDDD",
     borderWidth: 1,
     borderStyle: "solid",
-    shadowRadius: 2,
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.2,
+    // shadowRadius: 2,
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.2,
   },
   image: {
     width: "100%",
@@ -40,8 +55,22 @@ const styles = StyleSheet.create({
   restaurantInfo: {
     padding: 5,
     margin: 8,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
   },
   restaurantName: {
-    fontSize: 16,
+    fontSize: 18,
+    paddingBottom: 5,
+    fontWeight: "bold",
+  },
+  restaurantDelivery: {
+    color: "grey",
+  },
+  ratingContainer: {
+    flexDirection: "row",
+  },
+  ratingElement: {
+    marginLeft: 3,
   },
 });

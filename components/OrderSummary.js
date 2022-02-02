@@ -1,10 +1,13 @@
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import React from "react";
 
+import { computeSubtotal } from "../helpers";
+
 const OrderSummary = ({ cart, isTrackOrderScreen }) => {
-  const deliveryFees = 3;
+  const deliveryFees = 0;
   return (
     <View>
+      <Text style={styles.orderDetailsText}>Order Details</Text>
       <ScrollView style={isTrackOrderScreen && { maxHeight: "40%" }}>
         {cart?.items.map((item, index) => (
           <View
@@ -13,7 +16,7 @@ const OrderSummary = ({ cart, isTrackOrderScreen }) => {
           >
             <View style={styles.flexRow}>
               <Text style={[styles.cartItemQty, styles.textSize]}>
-                {item.qty}
+                {item.qty}x
               </Text>
               <Text style={styles.textSize}>{item.name}</Text>
             </View>
@@ -30,7 +33,14 @@ const OrderSummary = ({ cart, isTrackOrderScreen }) => {
         </View>
         <View style={[styles.cartFooterItem, styles.flexRow]}>
           <Text style={styles.textSize}>Delivery Fees</Text>
-          <Text style={styles.textSize}>${deliveryFees}</Text>
+          <Text
+            style={[
+              styles.textSize,
+              deliveryFees === 0 && { fontWeight: "bold" },
+            ]}
+          >
+            {deliveryFees === 0 ? "Free" : `${deliveryFees}`}
+          </Text>
         </View>
       </View>
       <View style={[styles.cartTotal, styles.flexRow]}>
@@ -44,11 +54,13 @@ const OrderSummary = ({ cart, isTrackOrderScreen }) => {
 
 export default OrderSummary;
 
-const computeSubtotal = (arr) => {
-  return arr.reduce((value, item) => value + item.qty * item.price, 0);
-};
-
 const styles = StyleSheet.create({
+  orderDetailsText: {
+    marginHorizontal: 15,
+    marginVertical: 5,
+    fontSize: 18,
+    color: "#fcbf49",
+  },
   flexRow: {
     flexDirection: "row",
   },

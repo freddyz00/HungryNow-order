@@ -147,10 +147,11 @@ const styles = StyleSheet.create({
   addToCartButton: {
     alignSelf: "center",
     backgroundColor: "#fcbf49",
-    paddingHorizontal: 40,
+    width: "80%",
+    alignItems: "center",
     paddingVertical: 15,
     margin: 15,
-    borderRadius: 5,
+    borderRadius: 10,
   },
   modalAddToCartText: {
     fontSize: 20,

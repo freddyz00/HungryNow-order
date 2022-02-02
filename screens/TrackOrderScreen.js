@@ -175,7 +175,6 @@ const TrackOrderScreen = ({ route }) => {
         </Text>
       </View>
       <View style={{ maxHeight: "40%" }}>
-        <Text style={styles.orderDetailsText}>Order Details</Text>
         <OrderSummary cart={cart} isTrackOrderScreen />
       </View>
     </View>
@@ -187,7 +186,7 @@ export default TrackOrderScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingBottom: 15,
+    paddingBottom: 30,
   },
   orderProgressWithMap: {
     alignItems: "center",
@@ -207,11 +206,5 @@ const styles = StyleSheet.create({
   },
   textSize: {
     fontSize: 18,
-  },
-  orderDetailsText: {
-    marginHorizontal: 15,
-    marginVertical: 5,
-    fontSize: 18,
-    color: "#fcbf49",
   },
 });

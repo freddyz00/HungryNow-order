@@ -1,3 +1,11 @@
+export const computeSubtotal = (arr) => {
+  return arr.reduce((value, item) => value + item.qty * item.price, 0);
+};
+
+export const getNumItemsInCart = (arr) => {
+  return arr.reduce((value, item) => value + item.qty, 0);
+};
+
 export const calculateMapCoords = (location1, location2 = null) => {
   if (!location2) {
     return {

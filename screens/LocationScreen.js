@@ -118,8 +118,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   map: {
-    width: "80%",
-    height: Dimensions.get("window").width * 0.8,
+    width: "100%",
+    height: Dimensions.get("window").width,
     margin: 10,
   },
   deliveryAddress: {
