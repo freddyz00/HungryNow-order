@@ -9,13 +9,16 @@ import {
 import React, { useState } from "react";
 
 import FoodItem from "../components/FoodItem";
+import AddToCartModal from "../components/AddToCartModal";
 
 const RestaurantScreen = ({ route }) => {
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const { menu, imageURL } = route.params.item;
 
   const onFoodItemClick = (item) => {
     setSelectedItem(item);
+    setIsModalVisible(true);
   };
 
   return (
@@ -32,6 +35,12 @@ const RestaurantScreen = ({ route }) => {
           />
         ))}
       </View>
+      <AddToCartModal
+        isModalVisible={isModalVisible}
+        setIsModalVisible={setIsModalVisible}
+        selectedItem={selectedItem}
+        restaurant={route.params.item}
+      />
     </View>
   );
 };
