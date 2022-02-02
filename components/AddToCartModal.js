@@ -11,6 +11,8 @@ import React, { useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 
+import { useCart } from "../context/CartContext";
+
 const AddToCartModal = ({
   isModalVisible,
   setIsModalVisible,
@@ -18,13 +20,53 @@ const AddToCartModal = ({
   restaurant,
 }) => {
   const [quantity, setQuantity] = useState(1);
+  const { cart, setCart } = useCart();
 
-  const addItemsToCart = () => {};
+  const addItemsToCart = (food, qty) => {
+    if (!cart.restaurant || cart.restaurant.name === restaurant.name) {
+      const found = cart.items.filter((item) => item.name === food.name);
+      if (found.length === 0) {
+        setCart({
+          restaurant: {
+            name: restaurant.name,
+            address: restaurant.address,
+            location: restaurant.location,
+          },
+          items: [...cart.items, { ...food, qty }],
+        });
+      } else {
+        const other_items = cart.items.filter(
+          (item) => item.name !== food.name
+        );
+        setCart({
+          restaurant: {
+            name: restaurant.name,
+            address: restaurant.address,
+            location: restaurant.location,
+          },
+          items: [...other_items, { ...found[0], qty: found[0].qty + qty }],
+        });
+      }
+    } else {
+      setCart({
+        restaurant: {
+          name: restaurant.name,
+          address: restaurant.address,
+          location: restaurant.location,
+        },
+        items: [{ ...food, qty }],
+      });
+    }
+    setIsModalVisible(false);
+  };
   return (
     <Modal
       animationType="fade"
       transparent={true}
       visible={isModalVisible}
+      onDismiss={() => {
+        setQuantity(1);
+      }}
       onRequestClose={() => {
         setIsModalVisible(!isModalVisible);
       }}
