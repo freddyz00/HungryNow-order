@@ -10,6 +10,8 @@ import { AntDesign } from "@expo/vector-icons";
 
 import { useCustomerLocation } from "../context/CustomerLocationContext";
 
+import Pusher from "pusher-js/react-native";
+
 import { calculateMapCoords } from "../helpers";
 
 import {
@@ -35,6 +37,74 @@ const TrackOrderScreen = ({ route }) => {
   const [hasDriver, setHasDriver] = useState(false);
   const [driverLocation, setDriverLocation] = useState();
   const [showMap, setShowMap] = useState(false);
+
+  useEffect(() => {
+    const pusher = new Pusher(CHANNELS_APP_KEY, {
+      authEndpoint: `${NGROK_URL}/pusher/auth`,
+      cluster: CHANNELS_APP_CLUSTER,
+      encrypted: true,
+    });
+
+    const available_drivers_channel = pusher.subscribe(
+      "private-available-drivers"
+    );
+
+    available_drivers_channel.bind("pusher:subscription_error", (error) => {
+      console.log(error);
+    });
+
+    available_drivers_channel.bind("pusher:subscription_succeeded", () => {
+      console.log("subscription success");
+      setTimeout(() => {
+        available_drivers_channel.trigger("client-request-driver", {
+          customer: { username: "freddy" },
+          restaurantLocation: cart.restaurant.location,
+          restaurantAddress: cart.restaurant.address,
+          customerLocation,
+          customerAddress,
+        });
+      }, 1000);
+    });
+
+    const user_rider_channel = pusher.subscribe("private-user-rider-freddy"); // to change channel name
+
+    user_rider_channel.bind("client-driver-response", () => {
+      user_rider_channel.trigger("client-driver-response", {
+        response: hasDriver ? "no" : "yes",
+      });
+    });
+
+    user_rider_channel.bind("client-found-driver", (data) => {
+      setIsSearchingForDriver(false);
+      setHasDriver(true);
+      setDriverLocation(data.location);
+    });
+
+    user_rider_channel.bind("client-driver-location", (data) => {
+      setDriverLocation(data.location);
+    });
+
+    user_rider_channel.bind("client-order-update", (data) => {
+      setCurrentOrderStep(data.orderStep);
+    });
+
+    user_rider_channel.bind("client-order-picked-up", () => {
+      setShowMap(true);
+    });
+
+    user_rider_channel.bind("client-order-delivered", () => {
+      user_rider_channel.unbind();
+      setIsSearchingForDriver(true);
+      setHasDriver(false);
+      setDriverLocation();
+    });
+    return () => {
+      setShowMap(false);
+      setCurrentOrderStep(0);
+      pusher.unsubscribe("private-available-drivers");
+      pusher.unsubscribe("private-user-rider-freddy");
+    };
+  }, []);
 
   return (
     <View style={styles.container}>
