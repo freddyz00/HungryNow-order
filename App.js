@@ -1,5 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -10,12 +9,14 @@ import RestaurantScreen from "./screens/RestaurantScreen";
 import CartScreen from "./screens/CartScreen";
 import LocationScreen from "./screens/LocationScreen";
 import GooglePlacesModal from "./components/GooglePlacesModal";
+import TrackOrderScreen from "./screens/TrackOrderScreen";
 
 // icons
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 
+// context
 import { CartProvider } from "./context/CartContext";
 import { CustomerLocationProvider } from "./context/CustomerLocationContext";
 
@@ -62,6 +63,15 @@ export default function App() {
               component={RestaurantScreen}
               options={({ navigation, route }) => ({
                 title: route.params.item.name,
+                headerRight: () => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("Cart");
+                    }}
+                  >
+                    <AntDesign name="shoppingcart" size={24} color="white" />
+                  </TouchableOpacity>
+                ),
               })}
             />
             <Stack.Screen
@@ -102,6 +112,13 @@ export default function App() {
                   </TouchableOpacity>
                 ),
               })}
+            />
+            <Stack.Screen
+              name="TrackOrder"
+              component={TrackOrderScreen}
+              options={{
+                headerTitle: "Track Your Order",
+              }}
             />
           </Stack.Navigator>
         </NavigationContainer>

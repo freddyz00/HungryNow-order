@@ -4,9 +4,11 @@ import React from "react";
 import OrderSummary from "../components/OrderSummary";
 
 import { useCart } from "../context/CartContext";
+import { useCustomerLocation } from "../context/CustomerLocationContext";
 
 const CartScreen = ({ navigation }) => {
   const { cart, setCart } = useCart();
+  const { customerLocation } = useCustomerLocation();
 
   return cart.items.length > 0 ? (
     <View style={{ flex: 1 }}>
@@ -16,7 +18,18 @@ const CartScreen = ({ navigation }) => {
       <View style={{ flex: 1 }}>
         <OrderSummary cart={cart} />
       </View>
-      <TouchableOpacity style={styles.cartButton}>
+      <TouchableOpacity
+        style={styles.cartButton}
+        onPress={() => {
+          if (customerLocation) {
+            navigation.goBack();
+            navigation.navigate("TrackOrder", { cart });
+            setCart({ restaurant: {}, items: [] });
+          } else {
+            navigation.navigate("Location", { buttonText: "Continue" });
+          }
+        }}
+      >
         <Text style={styles.cartButtonText}>Place Order</Text>
       </TouchableOpacity>
     </View>
