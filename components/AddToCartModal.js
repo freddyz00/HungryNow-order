@@ -1,12 +1,16 @@
 import {
+  Animated,
   View,
   Text,
   StyleSheet,
   Button,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Modal,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
+
+import * as Animatable from "react-native-animatable";
 
 import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -21,6 +25,8 @@ const AddToCartModal = ({
 }) => {
   const [quantity, setQuantity] = useState(1);
   const { cart, setCart } = useCart();
+
+  const animationRef = useRef();
 
   const addItemsToCart = (food, qty) => {
     if (!cart.restaurant || cart.restaurant.name === restaurant.name) {
@@ -59,9 +65,26 @@ const AddToCartModal = ({
     }
     setIsModalVisible(false);
   };
+
+  const closeModal = () => {
+    animationRef.current
+      .animate(
+        {
+          from: {
+            ["translateY"]: 0,
+          },
+          to: {
+            ["translateY"]: 230,
+          },
+        },
+        300
+      )
+      .then(() => setIsModalVisible(false));
+  };
+
   return (
     <Modal
-      animationType="fade"
+      animationType="none"
       transparent={true}
       visible={isModalVisible}
       onDismiss={() => {
@@ -72,12 +95,30 @@ const AddToCartModal = ({
       }}
     >
       <View style={styles.modalContainer}>
-        <View style={styles.modalView}>
+        <TouchableWithoutFeedback
+          style={{ flex: 1, width: "100%" }}
+          onPress={closeModal}
+        >
+          <View style={{ flex: 1, width: "100%" }} />
+        </TouchableWithoutFeedback>
+        <Animatable.View
+          ref={animationRef}
+          animation={{
+            from: {
+              ["translateY"]: 200,
+            },
+            to: {
+              ["translateY"]: 0,
+            },
+          }}
+          duration={300}
+          style={styles.modalView}
+        >
           <View style={styles.modalTop}>
             <Text
               style={styles.modalTopText}
             >{`${selectedItem?.name} - $${selectedItem?.price}`}</Text>
-            <TouchableOpacity onPress={() => setIsModalVisible(false)}>
+            <TouchableOpacity onPress={closeModal}>
               <Feather name="x" size={28} color="#fcbf49" />
             </TouchableOpacity>
           </View>
@@ -105,7 +146,7 @@ const AddToCartModal = ({
               <Text style={styles.modalAddToCartText}>Add To Cart</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </Animatable.View>
       </View>
     </Modal>
   );
@@ -116,21 +157,22 @@ export default AddToCartModal;
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalView: {
     backgroundColor: "white",
-    width: "80%",
-    borderRadius: 10,
+    width: "100%",
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
     justifyContent: "space-between",
   },
   modalTop: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    margin: 15,
+    margin: 20,
   },
   modalTopText: {
     fontSize: 22,
@@ -152,6 +194,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     margin: 15,
     borderRadius: 10,
+    marginBottom: 30,
   },
   modalAddToCartText: {
     fontSize: 20,

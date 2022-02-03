@@ -103,6 +103,7 @@ const TrackOrderScreen = ({ route }) => {
       setCurrentOrderStep(0);
       pusher.unsubscribe("private-available-drivers");
       pusher.unsubscribe("private-user-rider-freddy");
+      pusher.disconnect();
     };
   }, []);
 
