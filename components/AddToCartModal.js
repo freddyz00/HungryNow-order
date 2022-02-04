@@ -63,7 +63,7 @@ const AddToCartModal = ({
         items: [{ ...food, qty }],
       });
     }
-    setIsModalVisible(false);
+    closeModal();
   };
 
   const closeModal = () => {
@@ -77,7 +77,7 @@ const AddToCartModal = ({
             ["translateY"]: 230,
           },
         },
-        300
+        200
       )
       .then(() => setIsModalVisible(false));
   };

@@ -1,4 +1,9 @@
-import { TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -7,7 +12,6 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "./screens/HomeScreen";
 import RestaurantScreen from "./screens/RestaurantScreen";
 import CartScreen from "./screens/CartScreen";
-import LocationScreen from "./screens/LocationScreen";
 import GooglePlacesModal from "./components/GooglePlacesModal";
 import TrackOrderScreen from "./screens/TrackOrderScreen";
 
@@ -29,9 +33,8 @@ export default function App() {
         <NavigationContainer>
           <Stack.Navigator
             screenOptions={{
-              headerTintColor: "white",
-              headerStyle: {
-                backgroundColor: "#fcbf49",
+              contentStyle: {
+                backgroundColor: "white",
               },
               headerBackTitleVisible: false,
             }}
@@ -40,20 +43,20 @@ export default function App() {
               name="Home"
               component={HomeScreen}
               options={({ navigation }) => ({
-                title: "HungryNow",
-                headerLeft: () => (
-                  <TouchableOpacity
-                    onPress={() =>
-                      navigation.navigate("Location", { buttonText: "Save" })
-                    }
-                    style={{ paddingRight: 10 }}
+                headerTitle: () => (
+                  <TouchableWithoutFeedback
+                    onPress={() => navigation.navigate("Change Location")}
                   >
-                    <Entypo name="location" size={24} color="white" />
-                  </TouchableOpacity>
+                    <View style={{ alignItems: "center" }}>
+                      <Text style={{ fontSize: 18, fontWeight: "600" }}>
+                        HungryNow
+                      </Text>
+                    </View>
+                  </TouchableWithoutFeedback>
                 ),
                 headerRight: () => (
                   <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
-                    <AntDesign name="shoppingcart" size={24} color="white" />
+                    <AntDesign name="shoppingcart" size={24} color="#fcbf49" />
                   </TouchableOpacity>
                 ),
               })}
@@ -61,17 +64,8 @@ export default function App() {
             <Stack.Screen
               name="Restaurant"
               component={RestaurantScreen}
-              options={({ navigation, route }) => ({
-                title: route.params.item.name,
-                headerRight: () => (
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate("Cart");
-                    }}
-                  >
-                    <AntDesign name="shoppingcart" size={24} color="white" />
-                  </TouchableOpacity>
-                ),
+              options={() => ({
+                headerShown: false,
               })}
             />
             <Stack.Screen
@@ -82,33 +76,20 @@ export default function App() {
                 orientation: "portrait_up",
                 headerRight: () => (
                   <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Feather name="x" size={24} color="white" />
+                    <Feather name="x" size={24} color="#fcbf49" />
                   </TouchableOpacity>
                 ),
               })}
             />
             <Stack.Screen
-              name="Location"
-              component={LocationScreen}
-              options={({ navigation }) => ({
-                presentation: "fullScreenModal",
-                orientation: "portrait_up",
-                headerRight: () => (
-                  <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Feather name="x" size={24} color="white" />
-                  </TouchableOpacity>
-                ),
-              })}
-            />
-            <Stack.Screen
-              name="Choose Location"
+              name="Change Location"
               component={GooglePlacesModal}
               options={({ navigation }) => ({
                 presentation: "fullScreenModal",
                 orientation: "portrait_up",
                 headerRight: () => (
                   <TouchableOpacity onPress={() => navigation.goBack()}>
-                    <Feather name="x" size={24} color="white" />
+                    <Feather name="x" size={24} color="#fcbf49" />
                   </TouchableOpacity>
                 ),
               })}
@@ -118,6 +99,10 @@ export default function App() {
               component={TrackOrderScreen}
               options={{
                 headerTitle: "Track Your Order",
+                headerTintColor: "#fcbf49",
+                headerTitleStyle: {
+                  color: "black",
+                },
               }}
             />
           </Stack.Navigator>

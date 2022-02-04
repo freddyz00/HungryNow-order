@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   orderDetailsText: {
     marginHorizontal: 15,
     marginVertical: 5,
-    fontSize: 18,
+    fontSize: 20,
     color: "#fcbf49",
   },
   flexRow: {

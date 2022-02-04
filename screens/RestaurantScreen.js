@@ -4,8 +4,9 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
-  Modal,
+  FlatList,
 } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 
 import FoodItem from "../components/FoodItem";
@@ -14,10 +15,13 @@ import AddToCartModal from "../components/AddToCartModal";
 import { useCart } from "../context/CartContext";
 import { getNumItemsInCart } from "../helpers";
 
+import { Entypo } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
+
 const RestaurantScreen = ({ route, navigation }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const { menu, imageURL } = route.params.item;
+  const { name, menu, imageURL } = route.params.item;
 
   const { cart } = useCart();
 
@@ -28,17 +32,52 @@ const RestaurantScreen = ({ route, navigation }) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar style="light" />
       {/* image */}
+      <View style={[styles.icon, styles.iconLeft]}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Entypo name="chevron-left" size={30} color="#fcbf49" />
+        </TouchableOpacity>
+      </View>
+      <View style={[styles.icon, styles.iconRight]}>
+        <TouchableOpacity
+          style={{ right: 1, top: 1 }}
+          onPress={() => {
+            navigation.navigate("Cart");
+          }}
+        >
+          <AntDesign name="shoppingcart" size={24} color="#fcbf49" />
+        </TouchableOpacity>
+      </View>
       <Image source={imageURL} style={styles.image} />
       {/* menu items */}
       <View style={styles.menuItems}>
-        {menu.map((foodItem, index) => (
-          <FoodItem
-            item={foodItem}
-            key={index}
-            onClick={() => onFoodItemClick(foodItem)}
-          />
-        ))}
+        <FlatList
+          data={menu}
+          keyExtractor={(_, index) => index}
+          renderItem={({ item }) => (
+            <FoodItem item={item} onClick={() => onFoodItemClick(item)} />
+          )}
+          ListHeaderComponent={
+            <View style={styles.restaurantInfo}>
+              <Text style={styles.restaurantHeading}>{name}</Text>
+              <View style={styles.restaurantRating}>
+                <View style={{ flexDirection: "row" }}>
+                  <AntDesign name="star" size={16} color="#ffe234" />
+                  <AntDesign name="star" size={16} color="#ffe234" />
+                  <AntDesign name="star" size={16} color="#ffe234" />
+                  <AntDesign name="star" size={16} color="#ffe234" />
+                  <AntDesign name="star" size={16} color="#DDDDDD" />
+                  <Text style={styles.numRatings}>55 ratings</Text>
+                </View>
+                <Text style={{ fontWeight: "bold", color: "#fcbf49" }}>
+                  Free Delivery
+                </Text>
+              </View>
+              <Text></Text>
+            </View>
+          }
+        />
       </View>
       {cart.items.length > 0 && (
         <TouchableOpacity
@@ -75,8 +114,47 @@ const styles = StyleSheet.create({
     height: 250,
     marginBottom: 0,
   },
+  icon: {
+    position: "absolute",
+    alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: 0,
+    width: 36,
+    height: 36,
+    borderRadius: 25,
+    justifyContent: "center",
+
+    top: 50,
+    zIndex: 100,
+  },
+  iconLeft: {
+    left: 20,
+  },
+  iconRight: {
+    right: 20,
+  },
+  restaurantInfo: {
+    paddingHorizontal: 15,
+    paddingTop: 10,
+    borderStyle: "solid",
+    borderBottomColor: "#DDDDDD",
+    borderBottomWidth: 5,
+  },
+  restaurantHeading: {
+    fontSize: 24,
+    fontWeight: "bold",
+  },
+  restaurantRating: {
+    flexDirection: "row",
+    marginTop: 5,
+    justifyContent: "space-between",
+  },
+  numRatings: {
+    marginHorizontal: 5,
+  },
   menuItems: {
-    flexGrow: 1,
+    flex: 1,
+    marginBottom: 10,
   },
   viewCartButton: {
     alignSelf: "center",

@@ -18,13 +18,13 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     borderBottomColor: "#DDDDDD",
     borderBottomWidth: 1,
-    flexDirection: "row",
     justifyContent: "space-between",
   },
   menuText: {
-    fontSize: 16,
+    fontSize: 18,
+    paddingBottom: 10,
   },
   menuPrice: {
-    fontSize: 16,
+    fontSize: 14,
   },
 });

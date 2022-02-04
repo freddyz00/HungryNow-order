@@ -6,6 +6,8 @@ import OrderSummary from "../components/OrderSummary";
 import { useCart } from "../context/CartContext";
 import { useCustomerLocation } from "../context/CustomerLocationContext";
 
+import { computeSubtotal } from "../helpers";
+
 const CartScreen = ({ navigation }) => {
   const { cart, setCart } = useCart();
   const { customerLocation } = useCustomerLocation();
@@ -15,7 +17,7 @@ const CartScreen = ({ navigation }) => {
       <View>
         <Text style={styles.restaurantTitle}>{cart.restaurant.name}</Text>
       </View>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, maxHeight: "55%" }}>
         <OrderSummary cart={cart} />
       </View>
       <TouchableOpacity
@@ -26,21 +28,25 @@ const CartScreen = ({ navigation }) => {
             navigation.navigate("TrackOrder", { cart });
             setCart({ restaurant: {}, items: [] });
           } else {
-            navigation.navigate("Location", { buttonText: "Continue" });
+            navigation.navigate("Change Location");
           }
         }}
       >
-        <Text style={styles.cartButtonText}>Place Order</Text>
+        <Text style={styles.cartButtonText}>{`Place Order - $${computeSubtotal(
+          cart.items
+        )}`}</Text>
       </TouchableOpacity>
     </View>
   ) : (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Your cart is empty.</Text>
+      <Text style={{ fontSize: 18 }}>Your cart is empty.</Text>
       <TouchableOpacity
         style={styles.browseItems}
         onPress={() => navigation.goBack()}
       >
-        <Text style={{ color: "white", fontSize: 16 }}>Browse Items</Text>
+        <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+          Browse Items
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -50,10 +56,11 @@ export default CartScreen;
 
 const styles = StyleSheet.create({
   restaurantTitle: {
-    textAlign: "center",
-    fontSize: 28,
+    fontSize: 24,
+    fontWeight: "bold",
     paddingTop: 20,
     paddingBottom: 10,
+    paddingLeft: 15,
   },
   cartButton: {
     alignSelf: "center",
@@ -61,18 +68,20 @@ const styles = StyleSheet.create({
     width: "80%",
     paddingVertical: 15,
     borderRadius: 10,
-    marginBottom: 30,
+    position: "absolute",
+    bottom: 30,
   },
   cartButtonText: {
     color: "white",
     fontSize: 20,
     textAlign: "center",
+    fontWeight: "bold",
   },
   browseItems: {
     backgroundColor: "#fcbf49",
     paddingVertical: 15,
     paddingHorizontal: 30,
     borderRadius: 10,
-    margin: 10,
+    margin: 20,
   },
 });
