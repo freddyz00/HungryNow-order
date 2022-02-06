@@ -7,7 +7,7 @@ import {
   FlatList,
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import FoodItem from "../components/FoodItem";
 import AddToCartModal from "../components/AddToCartModal";
@@ -47,6 +47,15 @@ const RestaurantScreen = ({ route, navigation }) => {
           }}
         >
           <AntDesign name="shoppingcart" size={24} color="#fcbf49" />
+          {cart.items.length > 0 && (
+            <View style={styles.numCartItems}>
+              <Text
+                style={{ fontSize: 12, fontWeight: "bold", color: "white" }}
+              >
+                {cart.items.length}
+              </Text>
+            </View>
+          )}
         </TouchableOpacity>
       </View>
       <Image source={imageURL} style={styles.image} />
@@ -169,5 +178,16 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: "center",
     fontWeight: "bold",
+  },
+  numCartItems: {
+    width: 18,
+    height: 18,
+    position: "absolute",
+    left: 13,
+    bottom: 13,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#fcbf49",
   },
 });

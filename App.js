@@ -18,7 +18,6 @@ import TrackOrderScreen from "./screens/TrackOrderScreen";
 // icons
 import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
 
 // context
 import { CartProvider } from "./context/CartContext";

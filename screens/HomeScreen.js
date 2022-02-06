@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableWithoutFeedback,
   SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect } from "react";
 
@@ -13,8 +14,12 @@ import { restaurants } from "../data/restaurants";
 
 // import the components
 import RestaurantCard from "../components/RestaurantCard";
+import { AntDesign } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
 
 import * as Location from "expo-location";
+
+import { useCart } from "../context/CartContext";
 import { useCustomerLocation } from "../context/CustomerLocationContext";
 
 const HomeScreen = ({ navigation }) => {
@@ -24,6 +29,26 @@ const HomeScreen = ({ navigation }) => {
     setCustomerLocation,
     setCustomerAddress,
   } = useCustomerLocation();
+  const { cart } = useCart();
+
+  useEffect(() => {
+    if (cart.items.length > 0) {
+      navigation.setOptions({
+        headerRight: () => (
+          <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
+            <AntDesign name="shoppingcart" size={24} color="#fcbf49" />
+            <View style={styles.numCartItems}>
+              <Text
+                style={{ fontSize: 12, fontWeight: "bold", color: "white" }}
+              >
+                {cart.items.length}
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ),
+      });
+    }
+  }, [cart]);
 
   useEffect(() => {
     if (!customerAddress) {
@@ -70,7 +95,7 @@ const HomeScreen = ({ navigation }) => {
             <Text style={{ fontSize: 18, fontWeight: "600" }}>HungryNow</Text>
             <Text style={{ fontSize: 12, maxWidth: 200 }}>
               {customerAddress &&
-                (customerAddress?.length < 20
+                (customerAddress.length < 20
                   ? customerAddress
                   : `${customerAddress?.substring(0, 20)}...`)}
             </Text>
@@ -82,6 +107,7 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="dark" />
       <FlatList
         data={restaurants}
         keyExtractor={(item) => item.id}
@@ -119,5 +145,16 @@ const styles = StyleSheet.create({
     marginTop: 15,
     marginBottom: 10,
     fontWeight: "bold",
+  },
+  numCartItems: {
+    width: 18,
+    height: 18,
+    position: "absolute",
+    left: 13,
+    bottom: 13,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#fcbf49",
   },
 });
