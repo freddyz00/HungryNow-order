@@ -30,7 +30,7 @@ Geolocation will be used to figure out the driver's location. When a driver rece
 
 ![DriverOrderModal](/assets/appWorkflow/DriverOrderModal.jpg)
 
-Once the order has been accepted, the driver's screen will be presented with the location of the customer and the restaurant. The driver can execute each of the steps in the order process by clicking the button at the bottom. This will update the customer about the status of the order and the location of the driver. After the order has been delivered, the state of the app will reset and the app will be listening for a new order.
+Once the order has been accepted, the driver's screen will be presented with the location of the customer and the restaurant. The driver's location is constantly watched and sent to the user's app. The driver can execute each of the steps in the order process by clicking the button at the bottom. This will update the customer about the status of the order. After the order has been delivered, the state of the app will reset and the app will be listening for a new order.
 
 ![DriverLocationsMap](/assets/appWorkflow/DriverLocationsMap.jpg)
 ![DriverDeliveringOrder](/assets/appWorkflow/DriverDeliveringOrder.jpg)

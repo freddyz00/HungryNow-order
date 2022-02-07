@@ -41,6 +41,8 @@ const CartScreen = ({ navigation }) => {
     </View>
   ) : (
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <StatusBar style="dark" />
+
       <Text style={{ fontSize: 18 }}>Your cart is empty.</Text>
       <TouchableOpacity
         style={styles.browseItems}

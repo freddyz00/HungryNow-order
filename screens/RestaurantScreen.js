@@ -17,6 +17,7 @@ import { getNumItemsInCart } from "../helpers";
 
 import { Entypo } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const RestaurantScreen = ({ route, navigation }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -79,9 +80,28 @@ const RestaurantScreen = ({ route, navigation }) => {
                   <AntDesign name="star" size={16} color="#DDDDDD" />
                   <Text style={styles.numRatings}>55 ratings</Text>
                 </View>
-                <Text style={{ fontWeight: "bold", color: "#fcbf49" }}>
-                  Free Delivery
-                </Text>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                  }}
+                >
+                  <MaterialIcons
+                    name="delivery-dining"
+                    size={22}
+                    color="#fcbf49"
+                    style={{ position: "absolute", left: -20 }}
+                  />
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      color: "#fcbf49",
+                      marginLeft: 5,
+                    }}
+                  >
+                    Free Delivery
+                  </Text>
+                </View>
               </View>
               <Text></Text>
             </View>
