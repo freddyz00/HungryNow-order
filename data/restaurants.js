@@ -16,10 +16,6 @@ export const restaurants = [
       { name: "Hot Chocolate", price: 5 },
       { name: "White Coffee", price: 5 },
       { name: "Caramel Macchiato", price: 6 },
-      { name: "1", price: 5 },
-      { name: "2 Chocolate", price: 5 },
-      { name: "3 Coffee", price: 5 },
-      { name: "4 Macchiato", price: 6 },
     ],
   },
   {

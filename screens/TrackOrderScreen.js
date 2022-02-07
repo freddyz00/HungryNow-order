@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
 
 import MapView from "react-native-maps";
 import { Marker, PROVIDER_GOOGLE } from "react-native-maps";
@@ -109,6 +110,7 @@ const TrackOrderScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar style="dark" />
       <View
         style={
           showMap ? styles.orderProgressWithMap : styles.orderProgressNoMap

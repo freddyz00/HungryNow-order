@@ -32,11 +32,11 @@ const HomeScreen = ({ navigation }) => {
   const { cart } = useCart();
 
   useEffect(() => {
-    if (cart.items.length > 0) {
-      navigation.setOptions({
-        headerRight: () => (
-          <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
-            <AntDesign name="shoppingcart" size={24} color="#fcbf49" />
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
+          <AntDesign name="shoppingcart" size={24} color="#fcbf49" />
+          {cart.items.length > 0 && (
             <View style={styles.numCartItems}>
               <Text
                 style={{ fontSize: 12, fontWeight: "bold", color: "white" }}
@@ -44,10 +44,10 @@ const HomeScreen = ({ navigation }) => {
                 {cart.items.length}
               </Text>
             </View>
-          </TouchableOpacity>
-        ),
-      });
-    }
+          )}
+        </TouchableOpacity>
+      ),
+    });
   }, [cart]);
 
   useEffect(() => {
