@@ -4,7 +4,7 @@ export const restaurants = [
   {
     id: 1,
     name: "Coffee Corner",
-    address: "Mingalar Mandalay",
+    address: "Mingalar Mandalay, 73rd St, Mandalay, Myanmar (Burma)",
     location: [21.9476939, 96.0928349],
     imageURL: images.coffee,
     menu: [
@@ -25,7 +25,7 @@ export const restaurants = [
   {
     id: 2,
     name: "Pizza Hut",
-    address: "Mingalar Mandalay",
+    address: "Mingalar Mandalay, 73rd St, Mandalay, Myanmar (Burma)",
     location: [21.9476939, 96.0928349],
     imageURL: images.pizza,
     menu: [
@@ -40,7 +40,7 @@ export const restaurants = [
   {
     id: 3,
     name: "Salad Bar",
-    address: "Mingalar Mandalay",
+    address: "Mingalar Mandalay, 73rd St, Mandalay, Myanmar (Burma)",
     location: [21.9476939, 96.0928349],
     imageURL: images.salad,
     menu: [
@@ -54,7 +54,7 @@ export const restaurants = [
   {
     id: 4,
     name: "Noodle House",
-    address: "Mingalar Mandalay",
+    address: "Mingalar Mandalay, 73rd St, Mandalay, Myanmar (Burma)",
     location: [21.9476939, 96.0928349],
     imageURL: images.noodle,
     menu: [
@@ -68,7 +68,7 @@ export const restaurants = [
   {
     id: 5,
     name: "Sandwich Club",
-    address: "Mingalar Mandalay",
+    address: "Mingalar Mandalay, 73rd St, Mandalay, Myanmar (Burma)",
     location: [21.9476939, 96.0928349],
     imageURL: images.sandwich,
     menu: [

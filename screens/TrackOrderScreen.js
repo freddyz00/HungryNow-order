@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
+import { StatusBar } from "expo-status-bar";
 
 import MapView from "react-native-maps";
 import { Marker, PROVIDER_GOOGLE } from "react-native-maps";
@@ -54,7 +55,6 @@ const TrackOrderScreen = ({ route }) => {
     });
 
     available_drivers_channel.bind("pusher:subscription_succeeded", () => {
-      console.log("subscription success");
       setTimeout(() => {
         available_drivers_channel.trigger("client-request-driver", {
           customer: { username: "freddy" },
@@ -109,6 +109,7 @@ const TrackOrderScreen = ({ route }) => {
 
   return (
     <View style={styles.container}>
+      <StatusBar style="dark" />
       <View
         style={
           showMap ? styles.orderProgressWithMap : styles.orderProgressNoMap

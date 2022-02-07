@@ -56,7 +56,6 @@ const GooglePlacesModal = ({ navigation }) => {
           )}
         </MapView>
       ) : null}
-
       <TouchableOpacity
         style={styles.button}
         onPress={() => navigation.goBack()}

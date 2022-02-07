@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
+import { StatusBar } from "expo-status-bar";
 
 import OrderSummary from "../components/OrderSummary";
 
@@ -14,6 +15,7 @@ const CartScreen = ({ navigation }) => {
 
   return cart.items.length > 0 ? (
     <View style={{ flex: 1 }}>
+      <StatusBar style="dark" />
       <View>
         <Text style={styles.restaurantTitle}>{cart.restaurant.name}</Text>
       </View>
