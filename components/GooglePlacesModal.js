@@ -29,6 +29,7 @@ const GooglePlacesModal = ({ navigation }) => {
           }}
           provider={PROVIDER_GOOGLE}
         >
+          {/* google maps places */}
           <GooglePlacesAutocomplete
             placeholder="Search"
             onPress={(data, details = null) => {

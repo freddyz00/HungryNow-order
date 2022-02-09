@@ -19,6 +19,7 @@ const ChatScreen = ({ route }) => {
 
   let user_rider_channel;
 
+  // subscribe to pusher channel
   useEffect(() => {
     user_rider_channel = pusher.subscribe(
       `private-user-rider-${customer.username}`

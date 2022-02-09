@@ -34,7 +34,8 @@ const RestaurantScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <StatusBar style="light" />
-      {/* image */}
+
+      {/* header back and cart icons */}
       <View style={[styles.icon, styles.iconLeft]}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Entypo name="chevron-left" size={30} color="#fcbf49" />
@@ -59,7 +60,10 @@ const RestaurantScreen = ({ route, navigation }) => {
           )}
         </TouchableOpacity>
       </View>
+
+      {/* restaurant image */}
       <Image source={imageURL} style={styles.image} />
+
       {/* menu items */}
       <View style={styles.menuItems}>
         <FlatList
@@ -69,6 +73,7 @@ const RestaurantScreen = ({ route, navigation }) => {
             <FoodItem item={item} onClick={() => onFoodItemClick(item)} />
           )}
           ListHeaderComponent={
+            // restaurant information
             <View style={styles.restaurantInfo}>
               <Text style={styles.restaurantHeading}>{name}</Text>
               <View style={styles.restaurantRating}>
@@ -108,6 +113,8 @@ const RestaurantScreen = ({ route, navigation }) => {
           }
         />
       </View>
+
+      {/* view cart button */}
       {cart.items.length > 0 && (
         <TouchableOpacity
           style={styles.viewCartButton}
@@ -121,6 +128,7 @@ const RestaurantScreen = ({ route, navigation }) => {
         </TouchableOpacity>
       )}
 
+      {/* modal for adding items to cart */}
       <AddToCartModal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}

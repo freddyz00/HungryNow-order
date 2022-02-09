@@ -8,7 +8,7 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-//import screens
+// screens
 import HomeScreen from "./screens/HomeScreen";
 import RestaurantScreen from "./screens/RestaurantScreen";
 import CartScreen from "./screens/CartScreen";
@@ -30,7 +30,6 @@ export default function App() {
     <Provider>
       <NavigationContainer>
         <Stack.Navigator
-          // initialRouteName="Chat"
           screenOptions={{
             contentStyle: {
               backgroundColor: "white",

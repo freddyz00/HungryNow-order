@@ -41,6 +41,7 @@ const TrackOrderScreen = ({ navigation, route }) => {
   const [driverLocation, setDriverLocation] = useState();
   const [showMap, setShowMap] = useState(false);
 
+  // initialize pusher channels
   useEffect(() => {
     setPusher(
       new Pusher(CHANNELS_APP_KEY, {
@@ -51,6 +52,7 @@ const TrackOrderScreen = ({ navigation, route }) => {
     );
   }, []);
 
+  // subscribe to various pusher events
   useEffect(() => {
     if (pusher) {
       const available_drivers_channel = pusher.subscribe(
@@ -61,6 +63,7 @@ const TrackOrderScreen = ({ navigation, route }) => {
         console.log(error);
       });
 
+      // request for driver
       available_drivers_channel.bind("pusher:subscription_succeeded", () => {
         setTimeout(() => {
           available_drivers_channel.trigger("client-request-driver", {
@@ -73,32 +76,39 @@ const TrackOrderScreen = ({ navigation, route }) => {
         }, 1000);
       });
 
+      // private channel between user and driver
       const user_rider_channel = pusher.subscribe("private-user-rider-freddy"); // to change channel name
 
+      // confirmation with driver
       user_rider_channel.bind("client-driver-response", () => {
         user_rider_channel.trigger("client-driver-response", {
           response: hasDriver ? "no" : "yes",
         });
       });
 
+      // driver accepted the order
       user_rider_channel.bind("client-found-driver", (data) => {
         setIsSearchingForDriver(false);
         setHasDriver(true);
         setDriverLocation(data.location);
       });
 
+      // update driver location
       user_rider_channel.bind("client-driver-location", (data) => {
         setDriverLocation(data.location);
       });
 
+      // update order status
       user_rider_channel.bind("client-order-update", (data) => {
         setCurrentOrderStep(data.orderStep);
       });
 
+      //driver picked up order
       user_rider_channel.bind("client-order-picked-up", () => {
         setShowMap(true);
       });
 
+      //driver completed order
       user_rider_channel.bind("client-order-delivered", () => {
         user_rider_channel.unbind();
         setIsSearchingForDriver(true);
@@ -107,6 +117,7 @@ const TrackOrderScreen = ({ navigation, route }) => {
         setMessagesWithDriver([]);
       });
 
+      // cleanup
       return () => {
         setShowMap(false);
         setCurrentOrderStep(0);
@@ -126,6 +137,7 @@ const TrackOrderScreen = ({ navigation, route }) => {
         }
       >
         {showMap ? (
+          // map with driver's realtime location
           <MapView
             style={{ width: "100%", height: "65%" }}
             provider="google"
@@ -139,6 +151,7 @@ const TrackOrderScreen = ({ navigation, route }) => {
               />
             )}
 
+            {/*  show markers */}
             {cart.restaurant && (
               <Marker
                 title="Restaurant"
@@ -158,6 +171,7 @@ const TrackOrderScreen = ({ navigation, route }) => {
               />
             )}
 
+            {/* show directions */}
             {customerLocation && driverLocation && (
               <MapViewDirections
                 origin={driverLocation}
@@ -187,6 +201,8 @@ const TrackOrderScreen = ({ navigation, route }) => {
         >
           {orderSteps[currentOrderStep]}
         </Text>
+
+        {/* contact driver */}
         {hasDriver && (
           <TouchableOpacity
             style={styles.button}
@@ -200,6 +216,8 @@ const TrackOrderScreen = ({ navigation, route }) => {
           </TouchableOpacity>
         )}
       </View>
+
+      {/* order summary */}
       <View style={{ maxHeight: "40%" }}>
         <OrderSummary cart={cart} isTrackOrderScreen />
       </View>

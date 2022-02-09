@@ -7,12 +7,15 @@ const RestaurantCard = ({ item, onClick }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={onClick}>
+        {/* restaurant image */}
         <Image source={item.imageURL} style={styles.image} resizeMode="cover" />
         <View style={styles.restaurantInfo}>
           <View>
             <Text style={styles.restaurantName}>{item.name}</Text>
             <Text style={styles.restaurantDelivery}>Free Delivery</Text>
           </View>
+
+          {/* restaurant ratings */}
           <View style={styles.ratingContainer}>
             <AntDesign
               name="star"

@@ -9,6 +9,7 @@ const OrderSummary = ({ cart, isTrackOrderScreen }) => {
     <View>
       <Text style={styles.orderDetailsText}>Order Details</Text>
       <ScrollView style={isTrackOrderScreen && { maxHeight: "40%" }}>
+        {/* render each item in cart */}
         {cart?.items.map((item, index) => (
           <View
             style={[styles.cartItem, styles.flexRow, styles.borderBot]}
@@ -27,10 +28,13 @@ const OrderSummary = ({ cart, isTrackOrderScreen }) => {
         ))}
       </ScrollView>
       <View style={[styles.cartFooter, styles.borderBot]}>
+        {/* subtotal */}
         <View style={[styles.cartFooterItem, styles.flexRow]}>
           <Text style={styles.textSize}>Subtotal</Text>
           <Text style={styles.textSize}>${computeSubtotal(cart.items)}</Text>
         </View>
+
+        {/* delivery fees */}
         <View style={[styles.cartFooterItem, styles.flexRow]}>
           <Text style={styles.textSize}>Delivery Fees</Text>
           <Text
@@ -43,6 +47,8 @@ const OrderSummary = ({ cart, isTrackOrderScreen }) => {
           </Text>
         </View>
       </View>
+
+      {/* total price */}
       <View style={[styles.cartTotal, styles.flexRow]}>
         <Text style={[styles.cartTotalText, styles.textSize]}>
           Total{"   "}${deliveryFees + computeSubtotal(cart.items)}

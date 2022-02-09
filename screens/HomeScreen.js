@@ -31,6 +31,7 @@ const HomeScreen = ({ navigation }) => {
   } = useCustomerLocation();
   const { cart } = useCart();
 
+  // number of items on the cart icon
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -50,6 +51,7 @@ const HomeScreen = ({ navigation }) => {
     });
   }, [cart]);
 
+  // get customer location
   useEffect(() => {
     if (!customerAddress) {
       (async () => {
@@ -85,6 +87,7 @@ const HomeScreen = ({ navigation }) => {
     }
   }, []);
 
+  // set customer address in the header
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
@@ -133,7 +136,6 @@ const HomeScreen = ({ navigation }) => {
 
 export default HomeScreen;
 
-// styles
 const styles = StyleSheet.create({
   container: {
     height: "100%",

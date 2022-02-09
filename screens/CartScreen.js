@@ -22,6 +22,8 @@ const CartScreen = ({ navigation }) => {
       <View style={{ flex: 1, maxHeight: "55%" }}>
         <OrderSummary cart={cart} />
       </View>
+
+      {/* place order button */}
       <TouchableOpacity
         style={styles.cartButton}
         onPress={() => {
@@ -40,6 +42,7 @@ const CartScreen = ({ navigation }) => {
       </TouchableOpacity>
     </View>
   ) : (
+    // no items in cart``
     <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <StatusBar style="dark" />
 

@@ -95,12 +95,15 @@ const AddToCartModal = ({
       }}
     >
       <View style={styles.modalContainer}>
+        {/* modal backdrop */}
         <TouchableWithoutFeedback
           style={{ flex: 1, width: "100%" }}
           onPress={closeModal}
         >
           <View style={{ flex: 1, width: "100%" }} />
         </TouchableWithoutFeedback>
+
+        {/* animate modal on mount */}
         <Animatable.View
           ref={animationRef}
           animation={{
@@ -114,6 +117,7 @@ const AddToCartModal = ({
           duration={300}
           style={styles.modalView}
         >
+          {/* item details */}
           <View style={styles.modalTop}>
             <Text
               style={styles.modalTopText}
@@ -122,6 +126,8 @@ const AddToCartModal = ({
               <Feather name="x" size={28} color="#fcbf49" />
             </TouchableOpacity>
           </View>
+
+          {/* select number of items */}
           <View style={styles.modalCenter}>
             <TouchableOpacity
               onPress={() => setQuantity(quantity - 1)}
@@ -138,6 +144,8 @@ const AddToCartModal = ({
               <AntDesign name="pluscircleo" size={28} color="#fcbf49" />
             </TouchableOpacity>
           </View>
+
+          {/* add to cart button */}
           <View>
             <TouchableOpacity
               style={styles.addToCartButton}
