@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet } from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useEffect, useState, useRef } from "react";
 import { StatusBar } from "expo-status-bar";
 
 import MapView from "react-native-maps";
@@ -10,6 +10,7 @@ import OrderSummary from "../components/OrderSummary";
 import { AntDesign } from "@expo/vector-icons";
 
 import { useCustomerLocation } from "../context/CustomerLocationContext";
+import { useOrderTracker } from "../context/OrderTrackerContext";
 
 import Pusher from "pusher-js/react-native";
 
@@ -29,8 +30,9 @@ const orderSteps = [
   "Driver has delivered your order",
 ];
 
-const TrackOrderScreen = ({ route }) => {
+const TrackOrderScreen = ({ navigation, route }) => {
   const { customerLocation, customerAddress } = useCustomerLocation();
+  const { pusher, setPusher, setMessagesWithDriver } = useOrderTracker();
   const { cart } = route.params;
 
   const [isSearchingForDriver, setIsSearchingForDriver] = useState(true);
@@ -40,72 +42,80 @@ const TrackOrderScreen = ({ route }) => {
   const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
-    const pusher = new Pusher(CHANNELS_APP_KEY, {
-      authEndpoint: `${NGROK_URL}/pusher/auth`,
-      cluster: CHANNELS_APP_CLUSTER,
-      encrypted: true,
-    });
-
-    const available_drivers_channel = pusher.subscribe(
-      "private-available-drivers"
+    setPusher(
+      new Pusher(CHANNELS_APP_KEY, {
+        authEndpoint: `${NGROK_URL}/pusher/auth`,
+        cluster: CHANNELS_APP_CLUSTER,
+        encrypted: true,
+      })
     );
-
-    available_drivers_channel.bind("pusher:subscription_error", (error) => {
-      console.log(error);
-    });
-
-    available_drivers_channel.bind("pusher:subscription_succeeded", () => {
-      setTimeout(() => {
-        available_drivers_channel.trigger("client-request-driver", {
-          customer: { username: "freddy" },
-          restaurantLocation: cart.restaurant.location,
-          restaurantAddress: cart.restaurant.address,
-          customerLocation,
-          customerAddress,
-        });
-      }, 1000);
-    });
-
-    const user_rider_channel = pusher.subscribe("private-user-rider-freddy"); // to change channel name
-
-    user_rider_channel.bind("client-driver-response", () => {
-      user_rider_channel.trigger("client-driver-response", {
-        response: hasDriver ? "no" : "yes",
-      });
-    });
-
-    user_rider_channel.bind("client-found-driver", (data) => {
-      setIsSearchingForDriver(false);
-      setHasDriver(true);
-      setDriverLocation(data.location);
-    });
-
-    user_rider_channel.bind("client-driver-location", (data) => {
-      setDriverLocation(data.location);
-    });
-
-    user_rider_channel.bind("client-order-update", (data) => {
-      setCurrentOrderStep(data.orderStep);
-    });
-
-    user_rider_channel.bind("client-order-picked-up", () => {
-      setShowMap(true);
-    });
-
-    user_rider_channel.bind("client-order-delivered", () => {
-      user_rider_channel.unbind();
-      setIsSearchingForDriver(true);
-      setHasDriver(false);
-      setDriverLocation();
-    });
-    return () => {
-      setShowMap(false);
-      setCurrentOrderStep(0);
-      pusher.unsubscribe("private-available-drivers");
-      pusher.unsubscribe("private-user-rider-freddy");
-      pusher.disconnect();
-    };
   }, []);
+
+  useEffect(() => {
+    if (pusher) {
+      const available_drivers_channel = pusher.subscribe(
+        "private-available-drivers"
+      );
+
+      available_drivers_channel.bind("pusher:subscription_error", (error) => {
+        console.log(error);
+      });
+
+      available_drivers_channel.bind("pusher:subscription_succeeded", () => {
+        setTimeout(() => {
+          available_drivers_channel.trigger("client-request-driver", {
+            customer: { username: "freddy" },
+            restaurantLocation: cart.restaurant.location,
+            restaurantAddress: cart.restaurant.address,
+            customerLocation,
+            customerAddress,
+          });
+        }, 1000);
+      });
+
+      const user_rider_channel = pusher.subscribe("private-user-rider-freddy"); // to change channel name
+
+      user_rider_channel.bind("client-driver-response", () => {
+        user_rider_channel.trigger("client-driver-response", {
+          response: hasDriver ? "no" : "yes",
+        });
+      });
+
+      user_rider_channel.bind("client-found-driver", (data) => {
+        setIsSearchingForDriver(false);
+        setHasDriver(true);
+        setDriverLocation(data.location);
+      });
+
+      user_rider_channel.bind("client-driver-location", (data) => {
+        setDriverLocation(data.location);
+      });
+
+      user_rider_channel.bind("client-order-update", (data) => {
+        setCurrentOrderStep(data.orderStep);
+      });
+
+      user_rider_channel.bind("client-order-picked-up", () => {
+        setShowMap(true);
+      });
+
+      user_rider_channel.bind("client-order-delivered", () => {
+        user_rider_channel.unbind();
+        setIsSearchingForDriver(true);
+        setHasDriver(false);
+        setDriverLocation();
+        setMessagesWithDriver([]);
+      });
+
+      return () => {
+        setShowMap(false);
+        setCurrentOrderStep(0);
+        pusher.unsubscribe("private-available-drivers");
+        pusher.unsubscribe("private-user-rider-freddy");
+        pusher.disconnect();
+      };
+    }
+  }, [pusher]);
 
   return (
     <View style={styles.container}>
@@ -117,7 +127,7 @@ const TrackOrderScreen = ({ route }) => {
       >
         {showMap ? (
           <MapView
-            style={{ width: "100%", height: "80%" }}
+            style={{ width: "100%", height: "65%" }}
             provider="google"
             region={calculateMapCoords(customerLocation, driverLocation)}
           >
@@ -172,9 +182,23 @@ const TrackOrderScreen = ({ route }) => {
           </>
         )}
 
-        <Text style={[styles.margin20, styles.textSize]}>
+        <Text
+          style={[styles.margin20, styles.textSize, { textAlign: "center" }]}
+        >
           {orderSteps[currentOrderStep]}
         </Text>
+        {hasDriver && (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              navigation.navigate("Chat", {
+                customer: { username: "freddy" },
+              })
+            }
+          >
+            <Text style={styles.buttonText}>Contact Your Driver</Text>
+          </TouchableOpacity>
+        )}
       </View>
       <View style={{ maxHeight: "40%" }}>
         <OrderSummary cart={cart} isTrackOrderScreen />
@@ -192,13 +216,29 @@ const styles = StyleSheet.create({
   },
   orderProgressWithMap: {
     alignItems: "center",
-    flex: 1,
+    flex: 3,
     justifyContent: "flex-start",
   },
   orderProgressNoMap: {
     alignItems: "center",
     flex: 1,
     justifyContent: "center",
+  },
+  button: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "50%",
+    paddingVertical: 15,
+    borderRadius: 10,
+    alignSelf: "center",
+    backgroundColor: "#fcbf49",
+    position: "absolute",
+    bottom: 50,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 18,
   },
   margin20: {
     margin: 20,

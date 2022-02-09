@@ -2,7 +2,11 @@
 
 HungryNow is a project that is based on modern food ordering apps. This project consists of three parts: an ordering app for users, a driver's app, and the authentication server. This repository focuses on the first part of the project, the food ordering app.
 
-## Ordering App
+- Order App
+- [Driver App](https://github.com/freddyz00/HungryNow-driver)
+- [Server](https://github.com/freddyz00/HungryNow-server)
+
+## Order App
 
 The home screen consists of the list of all of the available restaurants each of which the user can select and view the menu that is offered by that particular restaurant.
 
