@@ -13,6 +13,7 @@ import { useCustomerLocation } from "../context/CustomerLocationContext";
 import { useOrderTracker } from "../context/OrderTrackerContext";
 
 import Pusher from "pusher-js/react-native";
+import { GiftedChat } from "react-native-gifted-chat";
 
 import { calculateMapCoords } from "../helpers";
 
@@ -32,36 +33,46 @@ const orderSteps = [
 
 const TrackOrderScreen = ({ navigation, route }) => {
   const { customerLocation, customerAddress } = useCustomerLocation();
-  const { pusher, setPusher, setMessagesWithDriver } = useOrderTracker();
-  const { cart } = route.params;
+  const {
+    order,
+    setOrder,
+    hasDriver,
+    setHasDriver,
+    isSearchingForDriver,
+    setIsSearchingForDriver,
+    driverLocation,
+    setDriverLocation,
+    messagesWithDriver,
+    setMessagesWithDriver,
+    currentOrderStep,
+    setCurrentOrderStep,
+    showMap,
+    setShowMap,
+    pusher,
+    setPusher,
+  } = useOrderTracker();
 
-  const [isSearchingForDriver, setIsSearchingForDriver] = useState(true);
-  const [currentOrderStep, setCurrentOrderStep] = useState(0);
-  const [hasDriver, setHasDriver] = useState(false);
-  const [driverLocation, setDriverLocation] = useState();
-  const [showMap, setShowMap] = useState(false);
+  const { cart } = route.params;
 
   // initialize pusher channels
   useEffect(() => {
-    setPusher(
-      new Pusher(CHANNELS_APP_KEY, {
-        authEndpoint: `${NGROK_URL}/pusher/auth`,
-        cluster: CHANNELS_APP_CLUSTER,
-        encrypted: true,
-      })
-    );
+    if (!order) {
+      setPusher(
+        new Pusher(CHANNELS_APP_KEY, {
+          authEndpoint: `${NGROK_URL}/pusher/auth`,
+          cluster: CHANNELS_APP_CLUSTER,
+          encrypted: true,
+        })
+      );
+    }
   }, []);
 
-  // subscribe to various pusher events
+  // if an order has just been made, subscribe to drivers channel and request for driver
   useEffect(() => {
-    if (pusher) {
+    if (pusher && !order) {
       const available_drivers_channel = pusher.subscribe(
         "private-available-drivers"
       );
-
-      available_drivers_channel.bind("pusher:subscription_error", (error) => {
-        console.log(error);
-      });
 
       // request for driver
       available_drivers_channel.bind("pusher:subscription_succeeded", () => {
@@ -76,6 +87,14 @@ const TrackOrderScreen = ({ navigation, route }) => {
         }, 1000);
       });
 
+      // set order to cart
+      setOrder(cart);
+    }
+  }, [pusher]);
+
+  // otherwise listen for events from driver
+  useEffect(() => {
+    if (pusher) {
       // private channel between user and driver
       const user_rider_channel = pusher.subscribe("private-user-rider-freddy"); // to change channel name
 
@@ -103,6 +122,13 @@ const TrackOrderScreen = ({ navigation, route }) => {
         setCurrentOrderStep(data.orderStep);
       });
 
+      // listen for messages from driver
+      user_rider_channel.bind("client-new-message", ({ messages }) => {
+        setMessagesWithDriver((prevMessages) =>
+          GiftedChat.append(prevMessages, [{ ...messages[0], sent: true }])
+        );
+      });
+
       //driver picked up order
       user_rider_channel.bind("client-order-picked-up", () => {
         setShowMap(true);
@@ -111,20 +137,24 @@ const TrackOrderScreen = ({ navigation, route }) => {
       //driver completed order
       user_rider_channel.bind("client-order-delivered", () => {
         user_rider_channel.unbind();
+        setOrder();
         setIsSearchingForDriver(true);
         setHasDriver(false);
         setDriverLocation();
-        setMessagesWithDriver([]);
-      });
-
-      // cleanup
-      return () => {
-        setShowMap(false);
-        setCurrentOrderStep(0);
         pusher.unsubscribe("private-available-drivers");
         pusher.unsubscribe("private-user-rider-freddy");
         pusher.disconnect();
-      };
+        setPusher();
+      });
+
+      // cleanup
+      if (currentOrderStep === orderSteps.length - 1) {
+        return () => {
+          setShowMap(false);
+          setCurrentOrderStep(0);
+          setMessagesWithDriver([]);
+        };
+      }
     }
   }, [pusher]);
 
@@ -152,12 +182,12 @@ const TrackOrderScreen = ({ navigation, route }) => {
             )}
 
             {/*  show markers */}
-            {cart.restaurant && (
+            {order?.restaurant && (
               <Marker
                 title="Restaurant"
                 coordinate={{
-                  latitude: cart.restaurant.location[0],
-                  longitude: cart.restaurant.location[1],
+                  latitude: order?.restaurant.location[0],
+                  longitude: order?.restaurant.location[1],
                 }}
                 pinColor="blue"
               />

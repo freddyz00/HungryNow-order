@@ -13,6 +13,16 @@ const CartScreen = ({ navigation }) => {
   const { cart, setCart } = useCart();
   const { customerLocation } = useCustomerLocation();
 
+  const placeOrder = () => {
+    if (customerLocation) {
+      navigation.goBack();
+      navigation.navigate("TrackOrder", { cart });
+      setCart({ restaurant: {}, items: [] });
+    } else {
+      navigation.navigate("Change Location");
+    }
+  };
+
   return cart.items.length > 0 ? (
     <View style={{ flex: 1 }}>
       <StatusBar style="dark" />
@@ -24,18 +34,7 @@ const CartScreen = ({ navigation }) => {
       </View>
 
       {/* place order button */}
-      <TouchableOpacity
-        style={styles.cartButton}
-        onPress={() => {
-          if (customerLocation) {
-            navigation.goBack();
-            navigation.navigate("TrackOrder", { cart });
-            setCart({ restaurant: {}, items: [] });
-          } else {
-            navigation.navigate("Change Location");
-          }
-        }}
-      >
+      <TouchableOpacity style={styles.cartButton} onPress={placeOrder}>
         <Text style={styles.cartButtonText}>{`Place Order - $${computeSubtotal(
           cart.items
         )}`}</Text>

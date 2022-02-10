@@ -20,17 +20,17 @@ const ChatScreen = ({ route }) => {
   let user_rider_channel;
 
   // subscribe to pusher channel
-  useEffect(() => {
-    user_rider_channel = pusher.subscribe(
-      `private-user-rider-${customer.username}`
-    );
+  // useEffect(() => {
+  //   user_rider_channel = pusher.subscribe(
+  //     `private-user-rider-${customer.username}`
+  //   );
 
-    user_rider_channel.bind("client-new-message", ({ messages }) => {
-      setMessagesWithDriver((prevMessages) =>
-        GiftedChat.append(prevMessages, [{ ...messages[0], sent: true }])
-      );
-    });
-  }, []);
+  //   user_rider_channel.bind("client-new-message", ({ messages }) => {
+  //     setMessagesWithDriver((prevMessages) =>
+  //       GiftedChat.append(prevMessages, [{ ...messages[0], sent: true }])
+  //     );
+  //   });
+  // }, []);
 
   const onSend = (messages = []) => {
     user_rider_channel = pusher.subscribe(

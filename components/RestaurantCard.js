@@ -3,9 +3,10 @@ import React from "react";
 
 import { AntDesign } from "@expo/vector-icons";
 
-const RestaurantCard = ({ item, onClick }) => {
+const RestaurantCard = ({ item, onClick, ...props }) => {
+  const { cardStyle } = props;
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, cardStyle]}>
       <TouchableOpacity onPress={onClick}>
         {/* restaurant image */}
         <Image source={item.imageURL} style={styles.image} resizeMode="cover" />

@@ -21,6 +21,7 @@ import * as Location from "expo-location";
 
 import { useCart } from "../context/CartContext";
 import { useCustomerLocation } from "../context/CustomerLocationContext";
+import { useOrderTracker } from "../context/OrderTrackerContext";
 
 const HomeScreen = ({ navigation }) => {
   const {
@@ -30,6 +31,7 @@ const HomeScreen = ({ navigation }) => {
     setCustomerAddress,
   } = useCustomerLocation();
   const { cart } = useCart();
+  const { order } = useOrderTracker();
 
   // number of items on the cart icon
   useEffect(() => {
@@ -109,12 +111,12 @@ const HomeScreen = ({ navigation }) => {
   }, [customerAddress]);
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <StatusBar style="dark" />
       <FlatList
         data={restaurants}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
+        renderItem={({ item, index }) => (
           <RestaurantCard
             onClick={() => {
               navigation.navigate("Restaurant", {
@@ -122,6 +124,7 @@ const HomeScreen = ({ navigation }) => {
               });
             }}
             item={item}
+            cardStyle={index === restaurants.length - 1 && { marginBottom: 20 }}
           />
         )}
         ListHeaderComponent={
@@ -130,17 +133,34 @@ const HomeScreen = ({ navigation }) => {
           </View>
         }
       />
-    </SafeAreaView>
+      {/* show button if there is currently an ongoing order */}
+      {order && (
+        <TouchableOpacity
+          onPress={() => navigation.navigate("TrackOrder", { cart: order })}
+          style={{
+            backgroundColor: "#fcbf49",
+            padding: 20,
+            position: "absolute",
+            bottom: 30,
+            alignItems: "center",
+            alignSelf: "center",
+            width: "80%",
+            borderRadius: 10,
+            zIndex: 1,
+          }}
+        >
+          <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>
+            You have an order
+          </Text>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
 
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    height: "100%",
-  },
-
   heading1: {
     fontSize: 20,
     marginHorizontal: 15,
