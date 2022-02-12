@@ -20,6 +20,8 @@ import { auth } from "../firebase";
 import { webClientID } from "../keys";
 import * as Google from "expo-auth-session/providers/google";
 
+import TextButton from "../components/TextButton";
+
 import { FontAwesome5 } from "@expo/vector-icons";
 
 export default function SignInScreen({ navigation }) {
@@ -118,33 +120,23 @@ export default function SignInScreen({ navigation }) {
             width: "90%",
           }}
         >
-          <TouchableOpacity
-            style={[
-              styles.button,
-              {
-                backgroundColor: "#fcbf49",
-              },
-            ]}
-          >
-            <Text style={[styles.buttonText, { color: "white" }]}>Log In</Text>
-          </TouchableOpacity>
+          <TextButton
+            title="Log In"
+            buttonStyle={{ backgroundColor: "#fcbf49", marginVertical: 15 }}
+            textStyle={{ color: "white" }}
+            onPress={() => signIn(email, password)}
+          />
         </View>
       </View>
 
       {/* sign in with google button */}
       <View style={{ width: "90%" }}>
-        <TouchableOpacity
+        <TextButton
+          title="Sign in with Google"
+          buttonStyle={{ backgroundColor: "#EEEEEE" }}
+          icon={require("../assets/google.png")}
           onPress={promptAsync}
-          style={[
-            styles.button,
-            {
-              backgroundColor: "#EEEEEE",
-            },
-          ]}
-        >
-          <Image style={styles.logo} source={require("../assets/google.png")} />
-          <Text style={styles.buttonText}>Sign in with Google</Text>
-        </TouchableOpacity>
+        />
       </View>
     </SafeAreaView>
   );
@@ -167,24 +159,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     padding: 15,
-  },
-  button: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    width: "100%",
-    marginVertical: 15,
-    paddingVertical: 15,
-    borderRadius: 10,
-  },
-  logo: {
-    width: 30,
-    height: 30,
-    marginRight: 10,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: "600",
   },
   signUpText: {
     fontSize: 12,

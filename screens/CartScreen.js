@@ -3,6 +3,7 @@ import React from "react";
 import { StatusBar } from "expo-status-bar";
 
 import OrderSummary from "../components/OrderSummary";
+import TextButton from "../components/TextButton";
 
 import { useCart } from "../context/CartContext";
 import { useCustomerLocation } from "../context/CustomerLocationContext";
@@ -34,11 +35,17 @@ const CartScreen = ({ navigation }) => {
       </View>
 
       {/* place order button */}
-      <TouchableOpacity style={styles.cartButton} onPress={placeOrder}>
-        <Text style={styles.cartButtonText}>{`Place Order - $${computeSubtotal(
-          cart.items
-        )}`}</Text>
-      </TouchableOpacity>
+      <TextButton
+        title={`Place Order - $${computeSubtotal(cart.items)}`}
+        buttonStyle={{
+          backgroundColor: "#fcbf49",
+          width: "80%",
+          position: "absolute",
+          bottom: 30,
+        }}
+        textStyle={{ fontSize: 20, color: "white", fontWeight: "bold" }}
+        onPress={placeOrder}
+      />
     </View>
   ) : (
     // no items in cart``
@@ -46,14 +53,16 @@ const CartScreen = ({ navigation }) => {
       <StatusBar style="dark" />
 
       <Text style={{ fontSize: 18 }}>Your cart is empty.</Text>
-      <TouchableOpacity
-        style={styles.browseItems}
+      <TextButton
+        title="Browse Items"
+        buttonStyle={{
+          backgroundColor: "#fcbf49",
+          margin: 20,
+          width: 180,
+        }}
+        textStyle={{ color: "white", fontWeight: "bold", fontSize: 20 }}
         onPress={() => navigation.goBack()}
-      >
-        <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
-          Browse Items
-        </Text>
-      </TouchableOpacity>
+      />
     </View>
   );
 };
@@ -67,27 +76,5 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     paddingBottom: 10,
     paddingLeft: 15,
-  },
-  cartButton: {
-    alignSelf: "center",
-    backgroundColor: "#fcbf49",
-    width: "80%",
-    paddingVertical: 15,
-    borderRadius: 10,
-    position: "absolute",
-    bottom: 30,
-  },
-  cartButtonText: {
-    color: "white",
-    fontSize: 20,
-    textAlign: "center",
-    fontWeight: "bold",
-  },
-  browseItems: {
-    backgroundColor: "#fcbf49",
-    paddingVertical: 15,
-    paddingHorizontal: 30,
-    borderRadius: 10,
-    margin: 20,
   },
 });

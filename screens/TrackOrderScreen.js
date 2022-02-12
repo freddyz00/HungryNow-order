@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import React, { useEffect, useState, useRef } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 
 import MapView from "react-native-maps";
@@ -7,6 +7,7 @@ import { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 
 import OrderSummary from "../components/OrderSummary";
+import TextButton from "../components/TextButton";
 import { AntDesign } from "@expo/vector-icons";
 
 import { useCustomerLocation } from "../context/CustomerLocationContext";
@@ -234,16 +235,24 @@ const TrackOrderScreen = ({ navigation, route }) => {
 
         {/* contact driver */}
         {hasDriver && (
-          <TouchableOpacity
-            style={styles.button}
+          <TextButton
+            title="Contact Your Driver"
+            buttonStyle={{
+              backgroundColor: "#fcbf49",
+              width: "50%",
+              position: "absolute",
+              bottom: 50,
+            }}
+            textStyle={{
+              color: "white",
+              fontSize: 18,
+            }}
             onPress={() =>
               navigation.navigate("Chat", {
                 customer: { username: "freddy" },
               })
             }
-          >
-            <Text style={styles.buttonText}>Contact Your Driver</Text>
-          </TouchableOpacity>
+          />
         )}
       </View>
 
@@ -271,22 +280,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
     justifyContent: "center",
-  },
-  button: {
-    alignItems: "center",
-    justifyContent: "center",
-    width: "50%",
-    paddingVertical: 15,
-    borderRadius: 10,
-    alignSelf: "center",
-    backgroundColor: "#fcbf49",
-    position: "absolute",
-    bottom: 50,
-  },
-  buttonText: {
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 18,
   },
   margin20: {
     margin: 20,

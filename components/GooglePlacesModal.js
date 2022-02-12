@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import React from "react";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
+import TextButton from "./TextButton";
+
 import { useCustomerLocation } from "../context/CustomerLocationContext";
 
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
@@ -57,12 +59,21 @@ const GooglePlacesModal = ({ navigation }) => {
           )}
         </MapView>
       ) : null}
-      <TouchableOpacity
-        style={styles.button}
+      <TextButton
+        title="Confirm"
+        buttonStyle={{
+          backgroundColor: "#fcbf49",
+          width: "80%",
+          position: "absolute",
+          bottom: 30,
+        }}
+        textStyle={{
+          fontSize: 20,
+          fontWeight: "bold",
+          color: "white",
+        }}
         onPress={() => navigation.goBack()}
-      >
-        <Text style={styles.buttonText}>Confirm</Text>
-      </TouchableOpacity>
+      />
     </View>
   );
 };
@@ -73,20 +84,5 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: "100%",
-  },
-  button: {
-    position: "absolute",
-    bottom: 30,
-    paddingVertical: 15,
-    backgroundColor: "#fcbf49",
-    width: "80%",
-    alignItems: "center",
-    alignSelf: "center",
-    borderRadius: 10,
-  },
-  buttonText: {
-    color: "white",
-    fontSize: 20,
-    fontWeight: "bold",
   },
 });

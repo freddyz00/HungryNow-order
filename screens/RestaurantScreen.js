@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 
 import FoodItem from "../components/FoodItem";
 import AddToCartModal from "../components/AddToCartModal";
+import TextButton from "../components/TextButton";
 
 import { useCart } from "../context/CartContext";
 import { getNumItemsInCart } from "../helpers";
@@ -116,16 +117,24 @@ const RestaurantScreen = ({ route, navigation }) => {
 
       {/* view cart button */}
       {cart.items.length > 0 && (
-        <TouchableOpacity
-          style={styles.viewCartButton}
-          onPress={() => navigation.navigate("Cart")}
-        >
-          <Text
-            style={styles.viewCartButtonText}
-          >{`View Your Cart (${getNumItemsInCart(cart.items)} item${
+        <TextButton
+          title={`View Your Cart (${getNumItemsInCart(cart.items)} item${
             cart.items.length === 1 ? "" : "s"
-          })`}</Text>
-        </TouchableOpacity>
+          })`}
+          buttonStyle={{
+            backgroundColor: "#fcbf49",
+            width: "80%",
+            alignSelf: "center",
+            position: "absolute",
+            bottom: 30,
+          }}
+          textStyle={{
+            fontSize: 20,
+            color: "white",
+            fontWeight: "bold",
+          }}
+          onPress={() => navigation.navigate("Cart")}
+        />
       )}
 
       {/* modal for adding items to cart */}
@@ -192,20 +201,6 @@ const styles = StyleSheet.create({
   menuItems: {
     flex: 1,
     marginBottom: 10,
-  },
-  viewCartButton: {
-    alignSelf: "center",
-    backgroundColor: "#fcbf49",
-    width: "80%",
-    paddingVertical: 15,
-    borderRadius: 10,
-    marginBottom: 30,
-  },
-  viewCartButtonText: {
-    color: "white",
-    fontSize: 20,
-    textAlign: "center",
-    fontWeight: "bold",
   },
   numCartItems: {
     width: 18,

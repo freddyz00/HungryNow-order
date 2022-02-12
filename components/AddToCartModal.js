@@ -12,6 +12,8 @@ import React, { useState, useRef, useEffect } from "react";
 
 import * as Animatable from "react-native-animatable";
 
+import TextButton from "./TextButton";
+
 import { Feather } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 
@@ -146,13 +148,13 @@ const AddToCartModal = ({
           </View>
 
           {/* add to cart button */}
-          <View>
-            <TouchableOpacity
-              style={styles.addToCartButton}
+          <View style={{ width: "80%", alignSelf: "center", margin: 30 }}>
+            <TextButton
+              title="Add to Cart"
+              buttonStyle={{ backgroundColor: "#fcbf49" }}
+              textStyle={{ color: "white", fontSize: 20, fontWeight: "bold" }}
               onPress={() => addItemsToCart(selectedItem, quantity)}
-            >
-              <Text style={styles.modalAddToCartText}>Add To Cart</Text>
-            </TouchableOpacity>
+            />
           </View>
         </Animatable.View>
       </View>
@@ -193,16 +195,6 @@ const styles = StyleSheet.create({
   },
   modalQuantity: {
     fontSize: 20,
-  },
-  addToCartButton: {
-    alignSelf: "center",
-    backgroundColor: "#fcbf49",
-    width: "80%",
-    alignItems: "center",
-    paddingVertical: 15,
-    margin: 15,
-    borderRadius: 10,
-    marginBottom: 30,
   },
   modalAddToCartText: {
     fontSize: 20,

@@ -9,13 +9,16 @@ import {
 } from "react-native";
 import React, { useEffect } from "react";
 
+import { StatusBar } from "expo-status-bar";
+
 // import the data
 import { restaurants } from "../data/restaurants";
 
-// import the components
 import RestaurantCard from "../components/RestaurantCard";
+
 import { AntDesign } from "@expo/vector-icons";
-import { StatusBar } from "expo-status-bar";
+
+import TextButton from "../components/TextButton";
 
 import * as Location from "expo-location";
 
@@ -135,24 +138,18 @@ const HomeScreen = ({ navigation }) => {
       />
       {/* show button if there is currently an ongoing order */}
       {order && (
-        <TouchableOpacity
-          onPress={() => navigation.navigate("TrackOrder", { cart: order })}
-          style={{
+        <TextButton
+          title="You have an ongoing order"
+          buttonStyle={{
             backgroundColor: "#fcbf49",
-            padding: 20,
+            zIndex: 1,
             position: "absolute",
             bottom: 30,
-            alignItems: "center",
-            alignSelf: "center",
             width: "80%",
-            borderRadius: 10,
-            zIndex: 1,
           }}
-        >
-          <Text style={{ fontSize: 18, color: "white", fontWeight: "bold" }}>
-            You have an order
-          </Text>
-        </TouchableOpacity>
+          textStyle={{ fontSize: 18, color: "white", fontWeight: "bold" }}
+          onPress={() => navigation.navigate("TrackOrder", { cart: order })}
+        />
       )}
     </View>
   );

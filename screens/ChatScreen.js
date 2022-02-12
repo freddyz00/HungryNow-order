@@ -1,11 +1,5 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-} from "react-native";
-import React, { useEffect } from "react";
+import { View, StyleSheet } from "react-native";
+import React from "react";
 import { StatusBar } from "expo-status-bar";
 
 import { GiftedChat } from "react-native-gifted-chat";
@@ -18,19 +12,6 @@ const ChatScreen = ({ route }) => {
   const { customer } = route.params;
 
   let user_rider_channel;
-
-  // subscribe to pusher channel
-  // useEffect(() => {
-  //   user_rider_channel = pusher.subscribe(
-  //     `private-user-rider-${customer.username}`
-  //   );
-
-  //   user_rider_channel.bind("client-new-message", ({ messages }) => {
-  //     setMessagesWithDriver((prevMessages) =>
-  //       GiftedChat.append(prevMessages, [{ ...messages[0], sent: true }])
-  //     );
-  //   });
-  // }, []);
 
   const onSend = (messages = []) => {
     user_rider_channel = pusher.subscribe(
