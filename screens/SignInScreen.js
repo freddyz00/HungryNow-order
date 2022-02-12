@@ -14,7 +14,7 @@ import { StatusBar } from "expo-status-bar";
 import {
   GoogleAuthProvider,
   signInWithCredential,
-  signOut,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { webClientID } from "../keys";
@@ -37,6 +37,14 @@ export default function SignInScreen({ navigation }) {
       signInWithCredential(auth, credential);
     }
   }, [response]);
+
+  const signIn = async (email, password) => {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <SafeAreaView

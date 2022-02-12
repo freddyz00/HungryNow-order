@@ -14,7 +14,7 @@ import { StatusBar } from "expo-status-bar";
 import {
   GoogleAuthProvider,
   signInWithCredential,
-  signOut,
+  createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { auth } from "../firebase";
 import { webClientID } from "../keys";
@@ -38,6 +38,14 @@ export default function SignUpScreen({ navigation }) {
       signInWithCredential(auth, credential);
     }
   }, [response]);
+
+  const signUp = async (email, password) => {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <SafeAreaView
@@ -149,10 +157,6 @@ export default function SignUpScreen({ navigation }) {
           <Image style={styles.logo} source={require("../assets/google.png")} />
           <Text style={styles.buttonText}>Sign in with Google</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity onPress={() => signOut(auth)} style={styles.button}>
-            <Image style={styles.logo} source={require("../assets/google.png")} />
-            <Text style={styles.buttonText}>Sign out</Text>
-          </TouchableOpacity> */}
       </View>
     </SafeAreaView>
   );
