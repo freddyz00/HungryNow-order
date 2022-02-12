@@ -137,10 +137,6 @@ export default function SignInScreen({ navigation }) {
           <Image style={styles.logo} source={require("../assets/google.png")} />
           <Text style={styles.buttonText}>Sign in with Google</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity onPress={() => signOut(auth)} style={styles.button}>
-          <Image style={styles.logo} source={require("../assets/google.png")} />
-          <Text style={styles.buttonText}>Sign out</Text>
-        </TouchableOpacity> */}
       </View>
     </SafeAreaView>
   );
