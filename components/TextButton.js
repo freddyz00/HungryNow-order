@@ -1,11 +1,19 @@
 import { Text, TouchableOpacity, StyleSheet, Image } from "react-native";
 import React from "react";
 
-const TextButton = ({ title, buttonStyle, textStyle, icon, onPress }) => {
+const TextButton = ({
+  title,
+  buttonStyle,
+  textStyle,
+  icon,
+  onPress,
+  ...props
+}) => {
   return (
     <TouchableOpacity
       style={[styles.button, buttonStyle && { ...buttonStyle }]}
       onPress={onPress}
+      {...props}
     >
       {icon && (
         <Image

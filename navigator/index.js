@@ -12,7 +12,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import HomeScreen from "../screens/HomeScreen";
 import RestaurantScreen from "../screens/RestaurantScreen";
 import CartScreen from "../screens/CartScreen";
-import GooglePlacesModal from "../components/GooglePlacesModal";
+import GooglePlacesScreen from "../components/GooglePlacesScreen";
 import TrackOrderScreen from "../screens/TrackOrderScreen";
 import ChatScreen from "../screens/ChatScreen";
 import SignInScreen from "../screens/SignInScreen";
@@ -83,7 +83,7 @@ const StackNavigator = () => {
           />
           <Stack.Screen
             name="Change Location"
-            component={GooglePlacesModal}
+            component={GooglePlacesScreen}
             options={({ navigation }) => ({
               presentation: "fullScreenModal",
               orientation: "portrait_up",

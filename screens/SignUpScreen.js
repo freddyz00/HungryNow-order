@@ -3,9 +3,7 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  Image,
-  TextInput,
-  Button,
+  Alert,
   SafeAreaView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
@@ -20,18 +18,54 @@ import { auth } from "../firebase";
 import { webClientID } from "../keys";
 import * as Google from "expo-auth-session/providers/google";
 
+import FormTextInput from "../components/FormTextInput";
+import TextButton from "../components/TextButton";
+
 import { FontAwesome5 } from "@expo/vector-icons";
 
-import TextButton from "../components/TextButton";
+import {
+  validateEmail,
+  validatePassword,
+  validateConfirmPassword,
+} from "../helpers";
 
 export default function SignUpScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [isValid, setIsValid] = useState(false);
 
   const [request, response, promptAsync] = Google.useIdTokenAuthRequest({
     clientId: webClientID,
   });
+
+  useEffect(() => {
+    if (
+      email &&
+      password &&
+      confirmPassword &&
+      !emailError &&
+      !passwordError &&
+      !confirmPasswordError
+    ) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+
+    if (!email) {
+      setEmailError("");
+    }
+    if (!password) {
+      setPasswordError("");
+    }
+    if (!confirmPassword) {
+      setConfirmPasswordError("");
+    }
+  }, [email, password, confirmPassword]);
 
   useEffect(() => {
     if (response?.type === "success") {
@@ -45,8 +79,23 @@ export default function SignUpScreen({ navigation }) {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      console.log(error);
+      Alert.alert(error.code);
     }
+  };
+
+  const onEmailChange = (val) => {
+    setEmail(val);
+    setEmailError(validateEmail(val));
+  };
+
+  const onPasswordChange = (val) => {
+    setPassword(val);
+    setPasswordError(validatePassword(val));
+  };
+
+  const onConfirmPasswordChange = (val) => {
+    setConfirmPassword(val);
+    setConfirmPasswordError(validateConfirmPassword(val, password));
   };
 
   return (
@@ -82,36 +131,27 @@ export default function SignUpScreen({ navigation }) {
         }}
       >
         {/* email */}
-        <View style={styles.textInputContainer}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Email"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-        </View>
+        <FormTextInput
+          placeholder="Email"
+          onChange={onEmailChange}
+          error={emailError}
+        />
 
         {/* password */}
-        <View style={styles.textInputContainer}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Password"
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            secureTextEntry
-          />
-        </View>
+        <FormTextInput
+          placeholder="Password"
+          onChange={onPasswordChange}
+          secureTextEntry
+          error={passwordError}
+        />
 
         {/* confirm password */}
-        <View style={styles.textInputContainer}>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Confirm Password"
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            secureTextEntry
-          />
-        </View>
+        <FormTextInput
+          placeholder="Confirm Password"
+          onChange={onConfirmPasswordChange}
+          secureTextEntry
+          error={confirmPasswordError}
+        />
 
         {/* don't have an account */}
         <View
@@ -137,6 +177,7 @@ export default function SignUpScreen({ navigation }) {
             buttonStyle={{ backgroundColor: "#fcbf49", marginVertical: 15 }}
             textStyle={{ color: "white" }}
             onPress={() => signUp(email, password)}
+            disabled={!isValid}
           />
         </View>
       </View>

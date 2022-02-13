@@ -28,3 +28,21 @@ export const calculateMapCoords = (location1, location2 = null) => {
   );
   return { latitude, longitude, latitudeDelta, longitudeDelta };
 };
+
+export const validateEmail = (email) => {
+  if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    return "Invalid Email";
+  }
+};
+
+export const validatePassword = (password) => {
+  if (password.length < 8) {
+    return "Passwords must be at least 8 characters";
+  }
+};
+
+export const validateConfirmPassword = (confirmPassword, password) => {
+  if (confirmPassword !== password) {
+    return "Passwords do not match";
+  }
+};

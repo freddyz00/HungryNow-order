@@ -10,7 +10,7 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 
 import { GOOGLE_MAPS_API_KEY } from "../keys";
 
-const GooglePlacesModal = ({ navigation }) => {
+const GooglePlacesScreen = ({ navigation }) => {
   const {
     customerLocation,
     customerAddress,
@@ -78,7 +78,7 @@ const GooglePlacesModal = ({ navigation }) => {
   );
 };
 
-export default GooglePlacesModal;
+export default GooglePlacesScreen;
 
 const styles = StyleSheet.create({
   map: {
