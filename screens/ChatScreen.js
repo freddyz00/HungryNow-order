@@ -5,18 +5,17 @@ import { StatusBar } from "expo-status-bar";
 import { GiftedChat } from "react-native-gifted-chat";
 
 import { useOrderTracker } from "../context/OrderTrackerContext";
+import { useAuth } from "../context/AuthContext";
 
 const ChatScreen = ({ route }) => {
   const { messagesWithDriver, setMessagesWithDriver, pusher } =
     useOrderTracker();
-  const { customer } = route.params;
+  const { user } = useAuth();
 
   let user_rider_channel;
 
   const onSend = (messages = []) => {
-    user_rider_channel = pusher.subscribe(
-      `private-user-rider-${customer.username}`
-    );
+    user_rider_channel = pusher.subscribe(`private-user-rider-${user.uid}`);
     user_rider_channel.trigger("client-new-message", {
       messages,
     });

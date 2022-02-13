@@ -12,6 +12,7 @@ import { AntDesign } from "@expo/vector-icons";
 
 import { useCustomerLocation } from "../context/CustomerLocationContext";
 import { useOrderTracker } from "../context/OrderTrackerContext";
+import { useAuth } from "../context/AuthContext";
 
 import Pusher from "pusher-js/react-native";
 import { GiftedChat } from "react-native-gifted-chat";
@@ -52,6 +53,7 @@ const TrackOrderScreen = ({ navigation, route }) => {
     pusher,
     setPusher,
   } = useOrderTracker();
+  const { user } = useAuth();
 
   const { cart } = route.params;
 
@@ -79,7 +81,7 @@ const TrackOrderScreen = ({ navigation, route }) => {
       available_drivers_channel.bind("pusher:subscription_succeeded", () => {
         setTimeout(() => {
           available_drivers_channel.trigger("client-request-driver", {
-            customer: { username: "freddy" },
+            customer: user,
             restaurantLocation: cart.restaurant.location,
             restaurantAddress: cart.restaurant.address,
             customerLocation,
@@ -97,7 +99,9 @@ const TrackOrderScreen = ({ navigation, route }) => {
   useEffect(() => {
     if (pusher) {
       // private channel between user and driver
-      const user_rider_channel = pusher.subscribe("private-user-rider-freddy"); // to change channel name
+      const user_rider_channel = pusher.subscribe(
+        `private-user-rider-${user.uid}`
+      ); // to change channel name
 
       // confirmation with driver
       user_rider_channel.bind("client-driver-response", () => {
@@ -143,7 +147,7 @@ const TrackOrderScreen = ({ navigation, route }) => {
         setHasDriver(false);
         setDriverLocation();
         pusher.unsubscribe("private-available-drivers");
-        pusher.unsubscribe("private-user-rider-freddy");
+        pusher.unsubscribe(`private-user-rider-${user.uid}`);
         pusher.disconnect();
         setPusher();
       });
@@ -247,11 +251,7 @@ const TrackOrderScreen = ({ navigation, route }) => {
               color: "white",
               fontSize: 18,
             }}
-            onPress={() =>
-              navigation.navigate("Chat", {
-                customer: { username: "freddy" },
-              })
-            }
+            onPress={() => navigation.navigate("Chat")}
           />
         )}
       </View>
