@@ -1,15 +1,10 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from "react-native";
+import { TouchableOpacity } from "react-native";
 import React from "react";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 // screens
-import HomeScreen from "../screens/HomeScreen";
+import DrawerNavigator from "./DrawerNavigator";
 import RestaurantScreen from "../screens/RestaurantScreen";
 import CartScreen from "../screens/CartScreen";
 import GooglePlacesScreen from "../components/GooglePlacesScreen";
@@ -19,7 +14,6 @@ import SignInScreen from "../screens/SignInScreen";
 import SignUpScreen from "../screens/SignUpScreen";
 
 // icons
-import { AntDesign } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 
 import { useAuth } from "../context/AuthContext";
@@ -40,26 +34,9 @@ const StackNavigator = () => {
       {user ? (
         <>
           <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={({ navigation }) => ({
-              headerTitle: () => (
-                <TouchableWithoutFeedback
-                  onPress={() => navigation.navigate("Change Location")}
-                >
-                  <View style={{ alignItems: "center" }}>
-                    <Text style={{ fontSize: 18, fontWeight: "600" }}>
-                      HungryNow
-                    </Text>
-                  </View>
-                </TouchableWithoutFeedback>
-              ),
-              headerRight: () => (
-                <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
-                  <AntDesign name="shoppingcart" size={24} color="#fcbf49" />
-                </TouchableOpacity>
-              ),
-            })}
+            name="Drawer"
+            component={DrawerNavigator}
+            options={{ headerShown: false }}
           />
           <Stack.Screen
             name="Restaurant"

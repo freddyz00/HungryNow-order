@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
         if (authUser) {
           setUser(authUser);
         } else {
-          console.log("logged out");
+          setUser();
         }
       }),
     []

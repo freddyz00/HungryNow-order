@@ -6,6 +6,8 @@ import Provider from "./context/Provider";
 
 import StackNavigator from "./navigator";
 
+import "react-native-gesture-handler";
+
 export default function App() {
   return (
     <Provider>

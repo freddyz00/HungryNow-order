@@ -40,7 +40,10 @@ const HomeScreen = ({ navigation }) => {
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Cart")}
+          style={{ marginRight: 20 }}
+        >
           <AntDesign name="shoppingcart" size={24} color="#fcbf49" />
           {cart.items.length > 0 && (
             <View style={styles.numCartItems}>
