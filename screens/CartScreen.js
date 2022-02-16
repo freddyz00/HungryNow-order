@@ -8,6 +8,9 @@ import TextButton from "../components/TextButton";
 import { useCart } from "../context/CartContext";
 import { useCustomerLocation } from "../context/CustomerLocationContext";
 
+import { collection, serverTimestamp, addDoc } from "firebase/firestore";
+import { db } from "../firebase";
+
 import { computeSubtotal } from "../helpers";
 
 const CartScreen = ({ navigation }) => {
@@ -18,9 +21,12 @@ const CartScreen = ({ navigation }) => {
     if (customerLocation) {
       navigation.goBack();
       navigation.navigate("TrackOrder", { cart });
+      addDoc(collection(db, "orders"), {
+        restaurantName: cart.restaurant.name,
+        totalPrice: 12,
+        timestamp: serverTimestamp(),
+      });
       setCart({ restaurant: {}, items: [] });
-    } else {
-      navigation.navigate("Change Location");
     }
   };
 

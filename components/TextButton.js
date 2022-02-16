@@ -11,7 +11,11 @@ const TextButton = ({
 }) => {
   return (
     <TouchableOpacity
-      style={[styles.button, buttonStyle && { ...buttonStyle }]}
+      style={[
+        styles.button,
+        { ...buttonStyle },
+        props.disabled && { opacity: 0.6 },
+      ]}
       onPress={onPress}
       {...props}
     >

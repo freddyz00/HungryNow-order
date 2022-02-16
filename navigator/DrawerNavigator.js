@@ -17,6 +17,7 @@ import {
 import HomeScreen from "../screens/HomeScreen";
 import OrdersScreen from "../screens/OrdersScreen";
 
+import { useAuth } from "../context/AuthContext";
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
 
@@ -27,9 +28,13 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 const Drawer = createDrawerNavigator();
 
 const CustomDrawerContent = (props) => {
+  const { user } = useAuth();
   return (
     <SafeAreaView style={{ flex: 1, justifyContent: "space-between" }}>
       <View>
+        <Text style={{ margin: 20, fontSize: 18, fontWeight: "bold" }}>
+          Hello, {user.displayName ? user.displayName : user.email}!
+        </Text>
         <DrawerItemList {...props} />
       </View>
 
