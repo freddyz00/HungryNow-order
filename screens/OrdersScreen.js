@@ -4,15 +4,28 @@ import React, { useState, useEffect } from "react";
 import CompletedOrder from "../components/CompletedOrder";
 
 import { db } from "../firebase";
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  query,
+  where,
+  orderBy,
+} from "firebase/firestore";
+
+import { useAuth } from "../context/AuthContext";
 
 const OrdersScreen = () => {
   const [orders, setOrders] = useState([]);
+  const { user } = useAuth();
 
   useEffect(() => {
     return (async () => {
       const unsub = onSnapshot(
-        query(collection(db, "orders"), orderBy("timestamp", "desc")),
+        query(
+          collection(db, "orders"),
+          where("userId", "==", user.uid),
+          orderBy("timestamp", "desc")
+        ),
         (querySnapshot) => {
           setOrders(
             querySnapshot.docs.map((doc) => ({
@@ -42,6 +55,7 @@ const OrdersScreen = () => {
             <Text style={styles.heading1}>Completed Orders</Text>
           </View>
         }
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );

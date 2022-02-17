@@ -7,6 +7,7 @@ import TextButton from "../components/TextButton";
 
 import { useCart } from "../context/CartContext";
 import { useCustomerLocation } from "../context/CustomerLocationContext";
+import { useAuth } from "../context/AuthContext";
 
 import { collection, serverTimestamp, addDoc } from "firebase/firestore";
 import { db } from "../firebase";
@@ -16,6 +17,7 @@ import { computeSubtotal } from "../helpers";
 const CartScreen = ({ navigation }) => {
   const { cart, setCart } = useCart();
   const { customerLocation } = useCustomerLocation();
+  const { user } = useAuth();
 
   const placeOrder = () => {
     if (customerLocation) {
@@ -25,6 +27,7 @@ const CartScreen = ({ navigation }) => {
         restaurantName: cart.restaurant.name,
         totalPrice: 12,
         timestamp: serverTimestamp(),
+        userId: user.uid,
       });
       setCart({ restaurant: {}, items: [] });
     }

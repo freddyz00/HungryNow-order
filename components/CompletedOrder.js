@@ -21,18 +21,11 @@ const CompletedOrder = ({ item, cardStyle }) => {
       <View style={styles.main}>
         <Text style={styles.restaurantName}>{restaurantName}</Text>
         <Text style={styles.amount}>${totalPrice}</Text>
-        <Text>{timestamp.toDate().toLocaleString().split(",")[0]}</Text>
+        <Text>{timestamp?.toDate().toLocaleString().split(",")[0]}</Text>
       </View>
       {/* right */}
       <View style={styles.right}>
-        <Text>
-          {timestamp.toDate().toLocaleString().split(",")[1].substring(0, 6)}{" "}
-          {item.timestamp
-            .toDate()
-            .toLocaleString()
-            .split(",")[1]
-            .substring(10, 12)}
-        </Text>
+        <Text>{timestamp?.toDate().toLocaleString().split(",")[1]}</Text>
       </View>
     </View>
   );
@@ -57,7 +50,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   main: {
-    marginLeft: 10,
+    marginLeft: 15,
     flex: 1,
     justifyContent: "space-between",
   },

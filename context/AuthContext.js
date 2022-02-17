@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
         <Image
           source={require("../assets/adaptive-icon.png")}
           style={{ width: 200, height: 200 }}
-          resizeMethod="cover"
+          resizeMode="cover"
         />
       </View>
     );
