@@ -86,6 +86,7 @@ const StackNavigator = () => {
             name="Chat"
             component={ChatScreen}
             options={{
+              title: "Contact",
               headerTintColor: "#fcbf49",
               headerTitleStyle: {
                 color: "black",

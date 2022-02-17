@@ -2,7 +2,7 @@ import { View, StyleSheet } from "react-native";
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 
-import { GiftedChat } from "react-native-gifted-chat";
+import { GiftedChat, Bubble, Time } from "react-native-gifted-chat";
 
 import { useOrderTracker } from "../context/OrderTrackerContext";
 import { useAuth } from "../context/AuthContext";
@@ -27,6 +27,30 @@ const ChatScreen = ({ route }) => {
     );
   };
 
+  const renderBubble = (props) => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          left: { backgroundColor: "grey" },
+          right: { backgroundColor: "#fcbf49" },
+        }}
+        textStyle={{ left: { color: "white" }, right: { color: "black" } }}
+        renderTime={renderTime}
+        tickStyle={{ color: "black" }}
+      />
+    );
+  };
+
+  const renderTime = (props) => {
+    return (
+      <Time
+        timeTextStyle={{ left: { color: "white" }, right: { color: "black" } }}
+        {...props}
+      />
+    );
+  };
+
   return (
     <View style={styles.container}>
       <StatusBar style="dark" />
@@ -34,6 +58,7 @@ const ChatScreen = ({ route }) => {
         messages={messagesWithDriver}
         user={{ _id: 1, name: "me" }}
         onSend={onSend}
+        renderBubble={renderBubble}
       />
     </View>
   );
