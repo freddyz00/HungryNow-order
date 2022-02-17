@@ -1,14 +1,12 @@
 import {
-  Animated,
   View,
   Text,
   StyleSheet,
-  Button,
   TouchableOpacity,
   TouchableWithoutFeedback,
   Modal,
 } from "react-native";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 
 import * as Animatable from "react-native-animatable";
 

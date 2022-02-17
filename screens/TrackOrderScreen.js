@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 
 import MapView from "react-native-maps";
-import { Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 
 import OrderSummary from "../components/OrderSummary";

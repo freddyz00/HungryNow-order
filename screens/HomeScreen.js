@@ -4,7 +4,6 @@ import {
   StyleSheet,
   FlatList,
   TouchableWithoutFeedback,
-  SafeAreaView,
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect } from "react";
