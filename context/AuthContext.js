@@ -8,7 +8,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(
     () =>
@@ -18,6 +18,7 @@ export const AuthProvider = ({ children }) => {
           setLoading(false);
         } else {
           setUser();
+          setLoading(false);
         }
       }),
     []
@@ -25,13 +26,14 @@ export const AuthProvider = ({ children }) => {
 
   const renderLoadingScreen = () => {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Image
-          source={require("../assets/adaptive-icon.png")}
-          style={{ width: 200, height: 200 }}
-          resizeMode="cover"
-        />
-      </View>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          backgroundColor: "#fcbf49",
+        }}
+      ></View>
     );
   };
 
