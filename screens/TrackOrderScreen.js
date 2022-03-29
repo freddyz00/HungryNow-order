@@ -23,7 +23,6 @@ import {
   CHANNELS_APP_KEY,
   CHANNELS_APP_CLUSTER,
   GOOGLE_MAPS_API_KEY,
-  NGROK_URL,
 } from "../keys";
 
 const orderSteps = [
@@ -62,7 +61,7 @@ const TrackOrderScreen = ({ navigation, route }) => {
     if (!order) {
       setPusher(
         new Pusher(CHANNELS_APP_KEY, {
-          authEndpoint: `${NGROK_URL}/pusher/auth`,
+          authEndpoint: `https://pusher-authentication-server.herokuapp.com/pusher/auth`,
           cluster: CHANNELS_APP_CLUSTER,
           encrypted: true,
         })
