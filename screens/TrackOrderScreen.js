@@ -150,17 +150,19 @@ const TrackOrderScreen = ({ navigation, route }) => {
         pusher.disconnect();
         setPusher();
       });
-
-      // cleanup
-      if (currentOrderStep === orderSteps.length - 1) {
-        return () => {
-          setShowMap(false);
-          setCurrentOrderStep(0);
-          setMessagesWithDriver([]);
-        };
-      }
     }
   }, [pusher]);
+
+  // reset order after order is delivered
+  useEffect(() => {
+    if (currentOrderStep === orderSteps.length - 1) {
+      return () => {
+        setShowMap(false);
+        setCurrentOrderStep(0);
+        setMessagesWithDriver([]);
+      };
+    }
+  }, [currentOrderStep]);
 
   return (
     <View style={styles.container}>

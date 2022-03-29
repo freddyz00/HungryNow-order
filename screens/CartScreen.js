@@ -25,7 +25,7 @@ const CartScreen = ({ navigation }) => {
       navigation.navigate("TrackOrder", { cart });
       addDoc(collection(db, "orders"), {
         restaurantName: cart.restaurant.name,
-        totalPrice: 12,
+        totalPrice: computeSubtotal(cart.items),
         timestamp: serverTimestamp(),
         userId: user.uid,
       });

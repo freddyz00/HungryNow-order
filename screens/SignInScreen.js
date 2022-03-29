@@ -159,7 +159,13 @@ export default function SignInScreen({ navigation }) {
           title="Sign in with Google"
           buttonStyle={{ backgroundColor: "#EEEEEE" }}
           icon={require("../assets/google.png")}
-          onPress={promptAsync}
+          onPress={() => {
+            try {
+              promptAsync();
+            } catch (e) {
+              Alert.alert(e.message);
+            }
+          }}
         />
       </View>
     </SafeAreaView>

@@ -20,6 +20,24 @@ const GooglePlacesScreen = ({ navigation }) => {
 
   return (
     <View style={{ flex: 1 }}>
+      {/* google maps places */}
+      <GooglePlacesAutocomplete
+        placeholder="Search"
+        styles={{ container: styles.googlePlacesAutocomplete }}
+        onPress={(data, details = null) => {
+          // 'details' is provided when fetchDetails = true
+          setCustomerLocation({
+            latitude: details.geometry.location.lat,
+            longitude: details.geometry.location.lng,
+          });
+          setCustomerAddress(details.formatted_address);
+        }}
+        fetchDetails={true}
+        query={{
+          key: GOOGLE_MAPS_API_KEY,
+          language: "en",
+        }}
+      />
       {customerLocation ? (
         <MapView
           style={styles.map}
@@ -31,23 +49,6 @@ const GooglePlacesScreen = ({ navigation }) => {
           }}
           provider={PROVIDER_GOOGLE}
         >
-          {/* google maps places */}
-          <GooglePlacesAutocomplete
-            placeholder="Search"
-            onPress={(data, details = null) => {
-              // 'details' is provided when fetchDetails = true
-              setCustomerLocation({
-                latitude: details.geometry.location.lat,
-                longitude: details.geometry.location.lng,
-              });
-              setCustomerAddress(details.formatted_address);
-            }}
-            fetchDetails={true}
-            query={{
-              key: GOOGLE_MAPS_API_KEY,
-              language: "en",
-            }}
-          />
           {customerLocation && (
             <Marker
               coordinate={{
@@ -84,5 +85,11 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: "100%",
+  },
+  googlePlacesAutocomplete: {
+    position: "absolute",
+    width: "100%",
+    top: 0,
+    zIndex: 10,
   },
 });
