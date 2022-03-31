@@ -1,10 +1,10 @@
 # HungryNow
 
-![demo](assets/app-images/JHRY1018.MP4)
+<img src="assets/app-images/demo.gif" width="207" alt="demo">
 
 ## App Description
 
-HungryNow is a food ordering app that contains features to simulate the food ordering process. It consists of two separate apps: an ordering app for users and a driver's app. It works by establishing a connection between the client and the driver that emits and listens to real-time events. These events are triggered back and forth between the client and the driver. The details about the project can be found at www.someurl.com
+HungryNow is a food ordering app that contains features to simulate the food ordering process. It consists of two separate apps: an ordering app for users and a driver's app. It works by establishing a connection between the client and the driver that emits and listens to real-time events. These events are triggered back and forth between the client and the driver. The details about the project can be found at [https://freddyzhao.herokuapp.com/hungrynow](https://freddyzhao.herokuapp.com/hungrynow).
 
 - Order App
 - [Driver App](https://github.com/freddyz00/HungryNow-driver)
@@ -19,7 +19,11 @@ Once an order has been placed, an event will be sent to drivers through pusher.j
 
 ### Running directly on your device
 
-Download Expo Go App on your device and scan the QR code below to run the app.
+Download the Expo Go App on your device and scan the QR code below to run the app.
+
+<img src="assets/expo-go.svg" width="300" alt="QR Code">
+
+If this method does not work, please follow the following steps.
 
 ### Running locally on your machine
 
@@ -31,8 +35,18 @@ cd WorkNow
 npm install
 ```
 
-Then, run the script to start the Expo app and follow the instructions provided by Expo CLI
+Install Expo CLI:
+
+```bash
+npm i -g expo-cli
+```
+
+Then, run the script to start the Expo app and follow the instructions provided:
 
 ```bash
 expo start
 ```
+
+### Note
+
+In order to simulate the whole process, please run both the order app and the driver app at the same time.
