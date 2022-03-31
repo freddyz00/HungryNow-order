@@ -1,6 +1,8 @@
 # HungryNow
 
-<img src="assets/demo.gif" width="207" alt="demo">
+<div style="text-align: center">
+    <img src="assets/demo.gif" alt="demo">
+</div>
 
 ## App Description
 
