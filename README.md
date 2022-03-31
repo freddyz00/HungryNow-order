@@ -1,6 +1,6 @@
 # HungryNow
 
-<img src="assets/app-images/demo.gif" width="207" alt="demo">
+<img src="assets/demo.gif" width="207" alt="demo">
 
 ## App Description
 
@@ -30,7 +30,7 @@ If this method does not work, please follow the following steps.
 First, clone the repository and install the required packages:
 
 ```bash
-git clone https://github.com/freddyz00/WorkNow.git
+git clone https://github.com/freddyz00/HungryNow-order.git
 cd WorkNow
 npm install
 ```
